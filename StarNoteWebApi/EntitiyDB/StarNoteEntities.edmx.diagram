@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="88c498dfe35c470b8df93a1ed61f5db5" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="StarNoteModel.partial_analysis" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="StarNoteModel.partial_saleschart" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="StarNoteModel.partial_salesman" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="StarNoteModel.partial_salespie" Width="1.5" PointX="2.75" PointY="3.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_case" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_company" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_costumer" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_kdvsource" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_lisance" Width="1.5" PointX="8.75" PointY="3.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_note" Width="1.5" PointX="8.75" PointY="6.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_paymenttype" Width="1.5" PointX="4.75" PointY="9.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_product" Width="1.5" PointX="6.75" PointY="9.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_remember" Width="1.5" PointX="8.75" PointY="9.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_rememberstatus" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_remembertype" Width="1.5" PointX="10.75" PointY="3.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_salesman" Width="1.5" PointX="10.75" PointY="6.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_stok" Width="1.5" PointX="10.75" PointY="9.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_type" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_typedetail" Width="1.5" PointX="2.75" PointY="12.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_unit" Width="1.5" PointX="12.75" PointY="3.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_users" Width="1.5" PointX="4.75" PointY="12.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_processtype" Width="1.5" PointX="12.75" PointY="6.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_joborder" Width="1.5" PointX="7.375" PointY="13.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_filemanagement" Width="1.5" PointX="13.375" PointY="9.75" />
+        <EntityTypeShape EntityType="StarNoteModel.tbl_customerorder" Width="1.5" PointX="9.375" PointY="13.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

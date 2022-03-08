@@ -1,0 +1,930 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="StarNoteModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="partial_analysis">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="RAN_DATE" Type="text" Nullable="false" />
+          <Property Name="PRICE" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="partial_saleschart">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="RAN_DATE" Type="mediumtext" Nullable="false" />
+          <Property Name="PRICE" Type="double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="partial_salesman">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="PRODUCT" Type="text" Nullable="false" />
+          <Property Name="PCSTYPE" Type="text" Nullable="false" />
+          <Property Name="PCS" Type="text" Nullable="false" />
+          <Property Name="PRICE" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="partial_salespie">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="PAYMENT" Type="mediumtext" Nullable="false" />
+          <Property Name="COUNT" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_case">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="mediumtext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="text" />
+          <Property Name="Address" Type="text" />
+          <Property Name="Taxname" Type="text" />
+          <Property Name="Taxno" Type="text" />
+        </EntityType>
+        <EntityType Name="tbl_costumer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="text" />
+          <Property Name="Tc" Type="text" />
+          <Property Name="Phone" Type="text" />
+          <Property Name="Email" Type="text" />
+          <Property Name="City" Type="text" />
+          <Property Name="Town" Type="text" />
+          <Property Name="Address" Type="text" />
+        </EntityType>
+        <EntityType Name="tbl_customerorder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Orderno" Type="text" />
+          <Property Name="Type" Type="text" />
+          <Property Name="Typedetail" Type="text" />
+          <Property Name="Orderdetail" Type="text" />
+          <Property Name="Orderdetail1" Type="text" />
+          <Property Name="Orderdetail2" Type="text" />
+          <Property Name="Name" Type="text" />
+          <Property Name="Phone" Type="text" />
+          <Property Name="Registerdate" Type="text" />
+          <Property Name="Daliverydate" Type="text" />
+          <Property Name="State" Type="text" />
+          <Property Name="Info" Type="text" />
+          <Property Name="Kdv" Type="text" />
+          <Property Name="Taxnumber" Type="text" />
+          <Property Name="Taxaddress" Type="text" />
+          <Property Name="Tc" Type="text" />
+          <Property Name="Address" Type="text" />
+          <Property Name="City" Type="text" />
+          <Property Name="Town" Type="text" />
+          <Property Name="Email" Type="text" />
+          <Property Name="Salesmethod" Type="text" />
+          <Property Name="Salesman" Type="text" />
+          <Property Name="Companyname" Type="text" />
+          <Property Name="Companyaddress" Type="text" />
+          <Property Name="Usercreated" Type="text" />
+          <Property Name="Price" Type="double" />
+          <Property Name="Prepayment" Type="double" />
+          <Property Name="Paymentmethod" Type="text" />
+          <Property Name="Pricewaiting" Type="double" />
+          <Property Name="TalimatAdliye" Type="text" />
+          <Property Name="TalimatMahkeme" Type="text" />
+          <Property Name="TalimatKararno" Type="text" />
+          <Property Name="Savetype" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_filemanagement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MainID" Type="int" />
+          <Property Name="Typename" Type="text" />
+          <Property Name="TypeDetail" Type="text" />
+          <Property Name="OrderDetail" Type="text" />
+          <Property Name="Fileno" Type="text" />
+          <Property Name="Companyname" Type="text" />
+          <Property Name="Costumername" Type="text" />
+          <Property Name="Filename" Type="text" />
+        </EntityType>
+        <EntityType Name="tbl_joborder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Upperid" Type="int" />
+          <Property Name="JobOrderNo" Type="text" />
+          <Property Name="Product" Type="text" />
+          <Property Name="Product2" Type="text" />
+          <Property Name="Producttype" Type="text" />
+          <Property Name="Amount" Type="int" />
+          <Property Name="Amounttype" Type="text" />
+          <Property Name="Price" Type="double" />
+          <Property Name="State" Type="text" />
+          <Property Name="Info" Type="text" />
+          <Property Name="Suggestedprice" Type="double" />
+          <Property Name="Countedprice" Type="double" />
+          <Property Name="Numberofline" Type="int" />
+          <Property Name="Numberofword" Type="int" />
+          <Property Name="Numberofchar" Type="int" />
+          <Property Name="Countedamount" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_kdvsource">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="mediumtext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_lisance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="200" />
+          <Property Name="PRODUCTID" Type="varchar" MaxLength="10000" />
+          <Property Name="END_DATE" Type="varchar" MaxLength="1000" />
+          <Property Name="STATUS" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="tbl_note">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="testtext" Type="text" />
+          <Property Name="textvarchar" Type="mediumtext" />
+        </EntityType>
+        <EntityType Name="tbl_paymenttype">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="text" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'def.u0070076_test1.tbl_processtype' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tbl_processtype">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Value" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="text" />
+        </EntityType>
+        <EntityType Name="tbl_remember">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Upperid" Type="int" Nullable="false" />
+          <Property Name="Record" Type="text" />
+          <Property Name="Recorddetail" Type="text" />
+          <Property Name="Remindingtype" Type="text" />
+          <Property Name="Remindingmsg" Type="text" />
+          <Property Name="Remindingstatus" Type="text" />
+        </EntityType>
+        <EntityType Name="tbl_rememberstatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="text" />
+        </EntityType>
+        <EntityType Name="tbl_remembertype">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="text" />
+        </EntityType>
+        <EntityType Name="tbl_salesman">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_stok">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="mediumtext" />
+          <Property Name="Name" Type="mediumtext" />
+          <Property Name="Unit" Type="mediumtext" />
+          <Property Name="Amount" Type="int" />
+          <Property Name="Incomerice" Type="double" />
+          <Property Name="Outcomeprice" Type="double" />
+          <Property Name="Kdv" Type="mediumtext" />
+          <Property Name="Discount" Type="double" />
+        </EntityType>
+        <EntityType Name="tbl_type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_typedetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="text" />
+        </EntityType>
+        <EntityType Name="tbl_unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="mediumtext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="text" Nullable="false" />
+          <Property Name="Surname" Type="text" Nullable="false" />
+          <Property Name="Users" Type="text" Nullable="false" />
+          <Property Name="Password" Type="text" Nullable="false" />
+          <Property Name="Mail" Type="text" Nullable="false" />
+          <Property Name="Authority" Type="text" Nullable="false" />
+          <Property Name="Isactive" Type="bool" Nullable="false" />
+          <Property Name="Reg_Date" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="StarNoteModelStoreContainer">
+          <EntitySet Name="partial_analysis" EntityType="Self.partial_analysis" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="partial_saleschart" EntityType="Self.partial_saleschart" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="partial_salesman" EntityType="Self.partial_salesman" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="partial_salespie" EntityType="Self.partial_salespie" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_case" EntityType="Self.tbl_case" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_company" EntityType="Self.tbl_company" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_costumer" EntityType="Self.tbl_costumer" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_customerorder" EntityType="Self.tbl_customerorder" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_filemanagement" EntityType="Self.tbl_filemanagement" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_joborder" EntityType="Self.tbl_joborder" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_kdvsource" EntityType="Self.tbl_kdvsource" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_lisance" EntityType="Self.tbl_lisance" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_note" EntityType="Self.tbl_note" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_paymenttype" EntityType="Self.tbl_paymenttype" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_product" EntityType="Self.tbl_product" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_remember" EntityType="Self.tbl_remember" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_rememberstatus" EntityType="Self.tbl_rememberstatus" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_remembertype" EntityType="Self.tbl_remembertype" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_salesman" EntityType="Self.tbl_salesman" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_stok" EntityType="Self.tbl_stok" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_type" EntityType="Self.tbl_type" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_typedetail" EntityType="Self.tbl_typedetail" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_unit" EntityType="Self.tbl_unit" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_users" EntityType="Self.tbl_users" Schema="u0070076_test1" store:Type="Tables" />
+          <EntitySet Name="tbl_processtype" EntityType="Self.tbl_processtype" store:Type="Tables" store:Schema="u0070076_test1">
+            <DefiningQuery>SELECT
+`tbl_processtype`.`Id`, 
+`tbl_processtype`.`Value`
+FROM `tbl_processtype` AS `tbl_processtype`</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StarNoteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="StarNoteEntity" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="partial_analysis" EntityType="StarNoteModel.partial_analysis" />
+          <EntitySet Name="partial_saleschart" EntityType="StarNoteModel.partial_saleschart" />
+          <EntitySet Name="partial_salesman" EntityType="StarNoteModel.partial_salesman" />
+          <EntitySet Name="partial_salespie" EntityType="StarNoteModel.partial_salespie" />
+          <EntitySet Name="tbl_case" EntityType="StarNoteModel.tbl_case" />
+          <EntitySet Name="tbl_company" EntityType="StarNoteModel.tbl_company" />
+          <EntitySet Name="tbl_costumer" EntityType="StarNoteModel.tbl_costumer" />
+          <EntitySet Name="tbl_kdvsource" EntityType="StarNoteModel.tbl_kdvsource" />
+          <EntitySet Name="tbl_lisance" EntityType="StarNoteModel.tbl_lisance" />
+          <EntitySet Name="tbl_note" EntityType="StarNoteModel.tbl_note" />
+          <EntitySet Name="tbl_paymenttype" EntityType="StarNoteModel.tbl_paymenttype" />
+          <EntitySet Name="tbl_product" EntityType="StarNoteModel.tbl_product" />
+          <EntitySet Name="tbl_remember" EntityType="StarNoteModel.tbl_remember" />
+          <EntitySet Name="tbl_rememberstatus" EntityType="StarNoteModel.tbl_rememberstatus" />
+          <EntitySet Name="tbl_remembertype" EntityType="StarNoteModel.tbl_remembertype" />
+          <EntitySet Name="tbl_salesman" EntityType="StarNoteModel.tbl_salesman" />
+          <EntitySet Name="tbl_stok" EntityType="StarNoteModel.tbl_stok" />
+          <EntitySet Name="tbl_type" EntityType="StarNoteModel.tbl_type" />
+          <EntitySet Name="tbl_typedetail" EntityType="StarNoteModel.tbl_typedetail" />
+          <EntitySet Name="tbl_unit" EntityType="StarNoteModel.tbl_unit" />
+          <EntitySet Name="tbl_users" EntityType="StarNoteModel.tbl_users" />
+          <EntitySet Name="tbl_processtype" EntityType="StarNoteModel.tbl_processtype" />
+          <EntitySet Name="tbl_joborder" EntityType="StarNoteModel.tbl_joborder" />
+          <EntitySet Name="tbl_filemanagement" EntityType="StarNoteModel.tbl_filemanagement" />
+          <EntitySet Name="tbl_customerorder" EntityType="StarNoteModel.tbl_customerorder" />
+        </EntityContainer>
+        <EntityType Name="partial_analysis">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="RAN_DATE" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="PRICE" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="partial_saleschart">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="RAN_DATE" Type="String" Nullable="false" MaxLength="16777215" FixedLength="false" Unicode="false" />
+          <Property Name="PRICE" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="partial_salesman">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="PRODUCT" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="PCSTYPE" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="PCS" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="PRICE" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="partial_salespie">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="PAYMENT" Type="String" Nullable="false" MaxLength="16777215" FixedLength="false" Unicode="false" />
+          <Property Name="COUNT" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_case">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="16777215" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Taxname" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Taxno" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_costumer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Tc" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Town" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_kdvsource">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="16777215" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_lisance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PRODUCTID" Type="String" MaxLength="10000" FixedLength="false" Unicode="false" />
+          <Property Name="END_DATE" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="STATUS" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_note">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="testtext" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="textvarchar" Type="String" MaxLength="16777215" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_paymenttype">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_remember">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Upperid" Type="Int32" Nullable="false" />
+          <Property Name="Record" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Recorddetail" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Remindingtype" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Remindingmsg" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Remindingstatus" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_rememberstatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_remembertype">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_salesman">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_stok">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="16777215" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="16777215" FixedLength="false" Unicode="false" />
+          <Property Name="Unit" Type="String" MaxLength="16777215" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Int32" />
+          <Property Name="Incomerice" Type="Double" />
+          <Property Name="Outcomeprice" Type="Double" />
+          <Property Name="Kdv" Type="String" MaxLength="16777215" FixedLength="false" Unicode="false" />
+          <Property Name="Discount" Type="Double" />
+        </EntityType>
+        <EntityType Name="tbl_type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_typedetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="16777215" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Users" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Mail" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Authority" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Isactive" Type="Boolean" Nullable="false" />
+          <Property Name="Reg_Date" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_processtype">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_joborder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Upperid" Type="Int32" />
+          <Property Name="JobOrderNo" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Product" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Product2" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Producttype" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Int32" />
+          <Property Name="Amounttype" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="State" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Info" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Suggestedprice" Type="Double" />
+          <Property Name="Countedprice" Type="Double" />
+          <Property Name="Numberofline" Type="Int32" />
+          <Property Name="Numberofword" Type="Int32" />
+          <Property Name="Numberofchar" Type="Int32" />
+          <Property Name="Countedamount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_filemanagement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MainID" Type="Int32" />
+          <Property Name="Typename" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="TypeDetail" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="OrderDetail" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Fileno" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Companyname" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Costumername" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Filename" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_customerorder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Orderno" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Typedetail" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Orderdetail" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Orderdetail1" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Orderdetail2" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Registerdate" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Daliverydate" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Info" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Kdv" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Taxnumber" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Taxaddress" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Tc" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Town" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Salesmethod" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Salesman" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Companyname" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Companyaddress" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Usercreated" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="Prepayment" Type="Double" />
+          <Property Name="Paymentmethod" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Pricewaiting" Type="Double" />
+          <Property Name="TalimatAdliye" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="TalimatMahkeme" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="TalimatKararno" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Savetype" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StarNoteModelStoreContainer" CdmEntityContainer="StarNoteEntity">
+          <EntitySetMapping Name="partial_analysis">
+            <EntityTypeMapping TypeName="StarNoteModel.partial_analysis">
+              <MappingFragment StoreEntitySet="partial_analysis">
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="RAN_DATE" ColumnName="RAN_DATE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="partial_saleschart">
+            <EntityTypeMapping TypeName="StarNoteModel.partial_saleschart">
+              <MappingFragment StoreEntitySet="partial_saleschart">
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="RAN_DATE" ColumnName="RAN_DATE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="partial_salesman">
+            <EntityTypeMapping TypeName="StarNoteModel.partial_salesman">
+              <MappingFragment StoreEntitySet="partial_salesman">
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="PCS" ColumnName="PCS" />
+                <ScalarProperty Name="PCSTYPE" ColumnName="PCSTYPE" />
+                <ScalarProperty Name="PRODUCT" ColumnName="PRODUCT" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="partial_salespie">
+            <EntityTypeMapping TypeName="StarNoteModel.partial_salespie">
+              <MappingFragment StoreEntitySet="partial_salespie">
+                <ScalarProperty Name="COUNT" ColumnName="COUNT" />
+                <ScalarProperty Name="PAYMENT" ColumnName="PAYMENT" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_case">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_case">
+              <MappingFragment StoreEntitySet="tbl_case">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_company">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_company">
+              <MappingFragment StoreEntitySet="tbl_company">
+                <ScalarProperty Name="Taxno" ColumnName="Taxno" />
+                <ScalarProperty Name="Taxname" ColumnName="Taxname" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_costumer">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_costumer">
+              <MappingFragment StoreEntitySet="tbl_costumer">
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Town" ColumnName="Town" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Tc" ColumnName="Tc" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_kdvsource">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_kdvsource">
+              <MappingFragment StoreEntitySet="tbl_kdvsource">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_lisance">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_lisance">
+              <MappingFragment StoreEntitySet="tbl_lisance">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+                <ScalarProperty Name="PRODUCTID" ColumnName="PRODUCTID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_note">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_note">
+              <MappingFragment StoreEntitySet="tbl_note">
+                <ScalarProperty Name="textvarchar" ColumnName="textvarchar" />
+                <ScalarProperty Name="testtext" ColumnName="testtext" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_paymenttype">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_paymenttype">
+              <MappingFragment StoreEntitySet="tbl_paymenttype">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_product">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_product">
+              <MappingFragment StoreEntitySet="tbl_product">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_remember">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_remember">
+              <MappingFragment StoreEntitySet="tbl_remember">
+                <ScalarProperty Name="Remindingstatus" ColumnName="Remindingstatus" />
+                <ScalarProperty Name="Remindingmsg" ColumnName="Remindingmsg" />
+                <ScalarProperty Name="Remindingtype" ColumnName="Remindingtype" />
+                <ScalarProperty Name="Recorddetail" ColumnName="Recorddetail" />
+                <ScalarProperty Name="Record" ColumnName="Record" />
+                <ScalarProperty Name="Upperid" ColumnName="Upperid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_rememberstatus">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_rememberstatus">
+              <MappingFragment StoreEntitySet="tbl_rememberstatus">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_remembertype">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_remembertype">
+              <MappingFragment StoreEntitySet="tbl_remembertype">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_salesman">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_salesman">
+              <MappingFragment StoreEntitySet="tbl_salesman">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_stok">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_stok">
+              <MappingFragment StoreEntitySet="tbl_stok">
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Kdv" ColumnName="Kdv" />
+                <ScalarProperty Name="Outcomeprice" ColumnName="Outcomeprice" />
+                <ScalarProperty Name="Incomerice" ColumnName="Incomerice" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_type">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_type">
+              <MappingFragment StoreEntitySet="tbl_type">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_typedetail">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_typedetail">
+              <MappingFragment StoreEntitySet="tbl_typedetail">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_unit">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_unit">
+              <MappingFragment StoreEntitySet="tbl_unit">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_users">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_users">
+              <MappingFragment StoreEntitySet="tbl_users">
+                <ScalarProperty Name="Reg_Date" ColumnName="Reg_Date" />
+                <ScalarProperty Name="Isactive" ColumnName="Isactive" />
+                <ScalarProperty Name="Authority" ColumnName="Authority" />
+                <ScalarProperty Name="Mail" ColumnName="Mail" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Users" ColumnName="Users" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_processtype">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_processtype">
+              <MappingFragment StoreEntitySet="tbl_processtype">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_joborder">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_joborder">
+              <MappingFragment StoreEntitySet="tbl_joborder">
+                <ScalarProperty Name="Countedamount" ColumnName="Countedamount" />
+                <ScalarProperty Name="Numberofchar" ColumnName="Numberofchar" />
+                <ScalarProperty Name="Numberofword" ColumnName="Numberofword" />
+                <ScalarProperty Name="Numberofline" ColumnName="Numberofline" />
+                <ScalarProperty Name="Countedprice" ColumnName="Countedprice" />
+                <ScalarProperty Name="Suggestedprice" ColumnName="Suggestedprice" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Amounttype" ColumnName="Amounttype" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Producttype" ColumnName="Producttype" />
+                <ScalarProperty Name="Product2" ColumnName="Product2" />
+                <ScalarProperty Name="Product" ColumnName="Product" />
+                <ScalarProperty Name="JobOrderNo" ColumnName="JobOrderNo" />
+                <ScalarProperty Name="Upperid" ColumnName="Upperid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_filemanagement">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_filemanagement">
+              <MappingFragment StoreEntitySet="tbl_filemanagement">
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="Costumername" ColumnName="Costumername" />
+                <ScalarProperty Name="Companyname" ColumnName="Companyname" />
+                <ScalarProperty Name="Fileno" ColumnName="Fileno" />
+                <ScalarProperty Name="OrderDetail" ColumnName="OrderDetail" />
+                <ScalarProperty Name="TypeDetail" ColumnName="TypeDetail" />
+                <ScalarProperty Name="Typename" ColumnName="Typename" />
+                <ScalarProperty Name="MainID" ColumnName="MainID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_customerorder">
+            <EntityTypeMapping TypeName="StarNoteModel.tbl_customerorder">
+              <MappingFragment StoreEntitySet="tbl_customerorder">
+                <ScalarProperty Name="Savetype" ColumnName="Savetype" />
+                <ScalarProperty Name="TalimatKararno" ColumnName="TalimatKararno" />
+                <ScalarProperty Name="TalimatMahkeme" ColumnName="TalimatMahkeme" />
+                <ScalarProperty Name="TalimatAdliye" ColumnName="TalimatAdliye" />
+                <ScalarProperty Name="Pricewaiting" ColumnName="Pricewaiting" />
+                <ScalarProperty Name="Paymentmethod" ColumnName="Paymentmethod" />
+                <ScalarProperty Name="Prepayment" ColumnName="Prepayment" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Usercreated" ColumnName="Usercreated" />
+                <ScalarProperty Name="Companyaddress" ColumnName="Companyaddress" />
+                <ScalarProperty Name="Companyname" ColumnName="Companyname" />
+                <ScalarProperty Name="Salesman" ColumnName="Salesman" />
+                <ScalarProperty Name="Salesmethod" ColumnName="Salesmethod" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Town" ColumnName="Town" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Tc" ColumnName="Tc" />
+                <ScalarProperty Name="Taxaddress" ColumnName="Taxaddress" />
+                <ScalarProperty Name="Taxnumber" ColumnName="Taxnumber" />
+                <ScalarProperty Name="Kdv" ColumnName="Kdv" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Daliverydate" ColumnName="Daliverydate" />
+                <ScalarProperty Name="Registerdate" ColumnName="Registerdate" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Orderdetail2" ColumnName="Orderdetail2" />
+                <ScalarProperty Name="Orderdetail1" ColumnName="Orderdetail1" />
+                <ScalarProperty Name="Orderdetail" ColumnName="Orderdetail" />
+                <ScalarProperty Name="Typedetail" ColumnName="Typedetail" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Orderno" ColumnName="Orderno" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
