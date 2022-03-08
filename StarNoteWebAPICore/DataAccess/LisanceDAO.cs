@@ -20,11 +20,11 @@ namespace StarNoteWebAPICore.DataAccess
                     {
                         lisancelist.Add(new LisanceModel
                         {
-                            Id = entitiycontext.ID,
-                            LisansAdı = entitiycontext.NAME,
-                            Durum = entitiycontext.STATUS,
-                            Sonaermetarihi = entitiycontext.END_DATE,
-                            Ürünanahtarı = entitiycontext.PRODUCTID                     
+                            Id = entitiycontext.Id,
+                            LisansAdı = entitiycontext.LisansAdı,
+                            Durum = entitiycontext.Durum,
+                            Sonaermetarihi = entitiycontext.Sonaermetarihi,
+                            Ürünanahtarı = entitiycontext.Ürünanahtarı                     
                         });
                     }
                 }
@@ -43,9 +43,9 @@ namespace StarNoteWebAPICore.DataAccess
             {
                 using (objcontext)
                 {
-                    tbl_lisance ekle = objcontext.tbl_lisance.First(i => i.ID == (Id));
+                    LisanceModel ekle = objcontext.tbl_lisance.First(i => i.Id == (Id));
 
-                    ekle.STATUS = status;                   
+                    ekle.Durum = status;                   
                     objcontext.SaveChanges();
                     isUpdated = true;
                 }
@@ -64,15 +64,8 @@ namespace StarNoteWebAPICore.DataAccess
         {
             bool IsAdded = false;
             try
-            {
-                tbl_lisance Objenttiy = new tbl_lisance();
-
-                //Objenttiy.ID = 1;
-                Objenttiy.NAME = oblisance.LisansAdı;
-                Objenttiy.PRODUCTID = oblisance.Ürünanahtarı;
-                Objenttiy.STATUS = oblisance.Durum;
-                Objenttiy.END_DATE = oblisance.Sonaermetarihi;         
-                objcontext.tbl_lisance.Add(Objenttiy);
+            {                     
+                objcontext.tbl_lisance.Add(oblisance);
                 var NoOFRowsAffected = objcontext.SaveChanges();
                 IsAdded = NoOFRowsAffected > 0;
             }
