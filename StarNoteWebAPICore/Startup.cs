@@ -50,7 +50,9 @@ namespace StarNoteWebAPICore
                    };
                });
 
+            services.AddMvc();
             services.AddControllers();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,14 +64,16 @@ namespace StarNoteWebAPICore
             }
 
             app.UseRouting();
-
+            app.UseStaticFiles();
             app.UseAuthentication();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                      name: "default",
+                      pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

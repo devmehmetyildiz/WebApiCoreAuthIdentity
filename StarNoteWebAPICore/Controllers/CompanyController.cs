@@ -10,17 +10,18 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace StarNoteWebAPICore.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CompanyController : ControllerBase
     {
         IDAO dao;
-        CompanyController()
+        public CompanyController()
         {
             dao = DAOBase.GetDAO();
         }
-        //CompanyDAO dataaccess = new CompanyDAO();
+        CompanyDAO dataaccess = new CompanyDAO();
+        [Route("GetAll")]
             public List<CompanyModel> GetAll()
             {
                 List<CompanyModel> list = new List<CompanyModel>();

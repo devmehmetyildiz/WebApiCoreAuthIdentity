@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace StarNoteWebAPICore.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MainScreenController : ControllerBase
@@ -23,6 +23,7 @@ namespace StarNoteWebAPICore.Controllers
         }
         
         [HttpGet]
+        [Route("GetMainAll")]
         public List<OrderModel> GetMainAll()
         {
             OrderModel model = new OrderModel();

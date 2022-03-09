@@ -13,12 +13,12 @@ namespace StarNoteWebAPICore.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-       
+       [Route("Test")]
         public string Test()
         {
             return "OK";
         }
-
+        [Route("DBTest")]
         [HttpGet]
         public string DBTest()
         {

@@ -19,9 +19,9 @@ namespace StarNoteWebAPICore.DataAccess
         public static int Salesman = 2;
         public static int Product = 3;
 
-        public BaseDAO() 
+        public BaseDAO(StarNoteEntity context) 
         {
-
+            
         }
     }
 }
