@@ -1,4 +1,5 @@
-﻿using StarNoteWebAPICore.EntityDB;
+﻿using Microsoft.EntityFrameworkCore;
+using StarNoteWebAPICore.EntityDB;
 using StarNoteWebAPICore.Models;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,8 @@ namespace StarNoteWebAPICore.DataAccess
         private string ekgeliraylık = "105";
         private string ekgeliryıllık = "205";
 
-     
+      
+
         public List<AnalysisMontlyModel> Fillmontlyanalysis(string datefilter,string type)
         {
             List<AnalysisMontlyModel> analysis = new List<AnalysisMontlyModel>();
@@ -61,7 +63,7 @@ namespace StarNoteWebAPICore.DataAccess
                     sql += "  from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID=tbl_joborder.Upperid";
                     sql += " WHERE MID(tbl_customerorder.Daliverydate, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' AND";
                     sql += " tbl_customerorder.savetype = '1' GROUP BY tbl_customerorder.Daliverydate";
-                    var enttiyresult1 = objcontext.partial_analysis.SqlQuery(sql).ToList();
+                    var enttiyresult1 = objcontext.partial_analysis.FromSqlRaw(sql).ToList();
                     analysisMontlyModel = new AnalysisMontlyModel();
                     analysisMontlyModel.Id = IDcounter;
                     analysisMontlyModel.Urun = "GENEL HARCAMALAR";
@@ -206,7 +208,7 @@ namespace StarNoteWebAPICore.DataAccess
                         sqlcmd += " AND tbl_customerorder.Salesmethod = 'GELIR'";
                     }                                                                
                     sqlcmd += " GROUP BY tbl_customerorder.Daliverydate";
-                    var enttiyresult = objcontext.partial_analysis.SqlQuery(sqlcmd).ToList();
+                    var enttiyresult = objcontext.partial_analysis.FromSqlRaw(sqlcmd).ToList();
                     analysisMontlyModel = new AnalysisMontlyModel();
                     analysisMontlyModel.Id = IDcounter;
                     analysisMontlyModel.Urun = stokname;
@@ -358,7 +360,7 @@ namespace StarNoteWebAPICore.DataAccess
                     sql += " tbl_joborder.PRICE ELSE 0 END) - SUM(Case When tbl_customerorder.Salesmethod = '" + Satınalma + "' Then tbl_joborder.PRICE ELSE 0 END))";
                     sql += " AS PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID = tbl_joborder.Upperid";
                     sql += " WHERE MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' AND tbl_customerorder.savetype = '1' GROUP BY MID(tbl_customerorder.Daliverydate, 4, 2)";
-                    var enttiyresult1 = objcontext.partial_analysis.SqlQuery(sql).ToList();
+                    var enttiyresult1 = objcontext.partial_analysis.FromSqlRaw(sql).ToList();
                     analysisYearlyModel = new AnalysisYearlyModel();
                     analysisYearlyModel.Id = IDcounter;
                     analysisYearlyModel.Urun = "GENEL HARCAMALAR";
@@ -444,7 +446,7 @@ namespace StarNoteWebAPICore.DataAccess
                         sqlcmd += " AND tbl_customerorder.Salesmethod = 'GELIR'";
                     }
                     sqlcmd += " GROUP BY MID(tbl_customerorder.Daliverydate, 4, 2)";
-                    var enttiyresult = objcontext.partial_analysis.SqlQuery(sqlcmd).ToList();                    
+                    var enttiyresult = objcontext.partial_analysis.FromSqlRaw(sqlcmd).ToList();                    
                     analysisYearlyModel = new AnalysisYearlyModel();
                     analysisYearlyModel.Id = IDcounter;
                     analysisYearlyModel.Urun = stokname;
@@ -506,8 +508,7 @@ namespace StarNoteWebAPICore.DataAccess
         public List<string> monthanalysispotansialgaugefill(string datefilter,string Tür)
         {
             List<string> output = new List<string>();
-            try
-            {
+           
                 DateTime filterdate = Convert.ToDateTime(datefilter);
                 string month = filterdate.Month.ToString("D2");
                 string year = filterdate.Year.ToString();                
@@ -521,19 +522,15 @@ namespace StarNoteWebAPICore.DataAccess
                 if (Tür == digerkurumaylık)
                     item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satış && c.Randevutarihi.Substring(3, 2) == month && c.Randevutarihi.Substring(6, 4) == year && c.Tür == "ŞİRKETLER") select c.Beklenentutar).Sum().ToString();
                 if (Tür == harcamaaylık)
-                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satış && c.Randevutarihi.Substring(3, 2) == month && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GIDER") select c.Pricewaiting).Sum().ToString();
+                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satış && c.Randevutarihi.Substring(3, 2) == month && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GIDER") select c.Beklenentutar).Sum().ToString();
                 if (Tür == ekgeliraylık)
-                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satış && c.Randevutarihi.Substring(3, 2) == month && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GELIR") select c.Pricewaiting).Sum().ToString();
+                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satış && c.Randevutarihi.Substring(3, 2) == month && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GELIR") select c.Beklenentutar).Sum().ToString();
                 if (item == string.Empty)
                     item = "0";
                 if (item == string.Empty)
                     item = "0";
                 output.Add(item);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+           
             return output;
         }
 
@@ -572,8 +569,7 @@ namespace StarNoteWebAPICore.DataAccess
         public List<string> monthanalysispurchasegaugefill(string datefilter,string Tür)
         {
             List<string> output = new List<string>();
-            try
-            {
+           
                 DateTime filterdate = Convert.ToDateTime(datefilter);
                 string month = filterdate.Month.ToString("D2");
                 string year = filterdate.Year.ToString();
@@ -587,15 +583,11 @@ namespace StarNoteWebAPICore.DataAccess
                 if (Tür == digerkurumaylık)
                     item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satınalma && c.Randevutarihi.Substring(3, 2) == month && c.Randevutarihi.Substring(6, 4) == year && c.Tür == "ŞİRKETLER") select c.Ücret).Sum().ToString();
                 if (Tür == harcamaaylık)
-                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satınalma && c.Randevutarihi.Substring(3, 2) == month && c.Randevutarihi.Substring(6, 4) == year && c.Savetype==1 && c.Satışyöntemi=="GIDER") select c.Price).Sum().ToString();
+                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satınalma && c.Randevutarihi.Substring(3, 2) == month && c.Randevutarihi.Substring(6, 4) == year && c.Savetype==1 && c.Satışyöntemi=="GIDER") select c.Ücret).Sum().ToString();
                 if (Tür == ekgeliraylık)
-                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satınalma && c.Randevutarihi.Substring(3, 2) == month && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GELIR") select c.Price).Sum().ToString();
+                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satınalma && c.Randevutarihi.Substring(3, 2) == month && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GELIR") select c.Ücret).Sum().ToString();
                 output.Add(item);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            
             return output;
         }
 
@@ -657,8 +649,7 @@ namespace StarNoteWebAPICore.DataAccess
         public List<string> yearlyanalysispotansialgaugefill(string datefilter, string Tür)
         {
             List<string> output = new List<string>();
-            try
-            {
+           
                 DateTime filterdate = Convert.ToDateTime(datefilter);
                 string month = filterdate.Month.ToString("D2");
                 string year = filterdate.Year.ToString();
@@ -678,11 +669,7 @@ namespace StarNoteWebAPICore.DataAccess
                 if (item == string.Empty)
                     item = "0";                
                 output.Add(item);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+           
             return output;
         }
 
@@ -704,9 +691,9 @@ namespace StarNoteWebAPICore.DataAccess
                 if (Tür == digerkurumyıllık)
                     item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satış && c.Randevutarihi.Substring(6, 4) == year && c.Tür == "ŞİRKETLER") select c.Ücret).Sum().ToString();
                 if (Tür == harcamayıllık)
-                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satış && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GIDER") select c.Price).Sum().ToString();
+                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satış && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GIDER") select c.Ücret).Sum().ToString();
                 if (Tür == ekgeliryıllık)
-                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satış && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GELIR") select c.Price).Sum().ToString();
+                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satış && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GELIR") select c.Ücret).Sum().ToString();
                 if (item == string.Empty)
                     item = "0";
                 output.Add(item);
@@ -721,8 +708,7 @@ namespace StarNoteWebAPICore.DataAccess
         public List<string> yearlyanalysispurchasegaugefill(string datefilter, string Tür)
         {
             List<string> output = new List<string>();
-            try
-            {
+          
                 DateTime filterdate = Convert.ToDateTime(datefilter);
                 string month = filterdate.Month.ToString("D2");
                 string year = filterdate.Year.ToString();
@@ -736,25 +722,20 @@ namespace StarNoteWebAPICore.DataAccess
                 if (Tür == digerkurumaylık)
                     item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satınalma && c.Randevutarihi.Substring(6, 4) == year && c.Tür == "ŞİRKETLER") select c.Ücret).Sum().ToString();
                 if (Tür == harcamaaylık)
-                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satınalma && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GIDER") select c.Price).Sum().ToString();
+                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satınalma && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GIDER") select c.Ücret).Sum().ToString();
                 if (Tür == ekgeliraylık)
-                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satınalma && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GELIR") select c.Price).Sum().ToString();
+                    item = (from c in objcontext.tbl_customerorder where (c.Satışyöntemi == Satınalma && c.Randevutarihi.Substring(6, 4) == year && c.Savetype == 1 && c.Satışyöntemi == "GELIR") select c.Ücret).Sum().ToString();
                 if (item == string.Empty)
                     item = "0";
                 output.Add(item);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+           
             return output;
         }
 
         public List<string> yearlyanalysisnetgaugefill(string datefilter, string Tür)
         {
             List<string> output = new List<string>();
-            try
-            {
+           
                 DateTime filterdate = Convert.ToDateTime(datefilter);
                 string month = filterdate.Month.ToString("D2");
                 string year = filterdate.Year.ToString();
@@ -797,11 +778,8 @@ namespace StarNoteWebAPICore.DataAccess
                 double netdeger = Convert.ToDouble(income) - Convert.ToDouble(outcome);
 
                 output.Add(netdeger.ToString());
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            
+           
             return output;
         }
 
@@ -819,7 +797,7 @@ namespace StarNoteWebAPICore.DataAccess
                 
                 foreach (var salesman in salesmans)
                 {                  
-                    var enttiyresult = objcontext.partial_salesman.SqlQuery("Select tbl_customerorder.ID, tbl_joborder.Product AS PRODUCT, tbl_joborder.Amounttype AS PCSTYPE, tbl_joborder.Amount AS PCS, SUM(tbl_joborder.Price * 1) AS PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID = tbl_joborder.Upperid WHERE MID(tbl_customerorder.Daliverydate, 4, 2) = '"+month+"' AND MID(tbl_customerorder.Daliverydate, 7, 4) = '"+year+"' AND tbl_customerorder.Salesman = '"+salesman+"'  AND tbl_customerorder.Salesmethod = '"+Satış+"' GROUP BY tbl_joborder.Product ").ToList();
+                    var enttiyresult = objcontext.partial_salesman.FromSqlRaw("Select tbl_customerorder.ID, tbl_joborder.Product AS PRODUCT, tbl_joborder.Amounttype AS PCSTYPE, tbl_joborder.Amount AS PCS, SUM(tbl_joborder.Price * 1) AS PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID = tbl_joborder.Upperid WHERE MID(tbl_customerorder.Daliverydate, 4, 2) = '"+month+"' AND MID(tbl_customerorder.Daliverydate, 7, 4) = '"+year+"' AND tbl_customerorder.Salesman = '"+salesman+"'  AND tbl_customerorder.Salesmethod = '"+Satış+"' GROUP BY tbl_joborder.Product ").ToList();
                     int IDcounter = 1;
                     foreach (var item in enttiyresult)
                     {
@@ -855,7 +833,7 @@ namespace StarNoteWebAPICore.DataAccess
               
                 foreach (var salesman in salesmans)
                 {                  
-                    var enttiyresult = objcontext.partial_salesman.SqlQuery("Select tbl_customerorder.ID,tbl_joborder.Product AS PRODUCT, tbl_joborder.Amounttype AS PCSTYPE,tbl_joborder.Amount AS PCS,SUM(tbl_joborder.Price * -1) AS PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID = tbl_joborder.Upperid WHERE MID(tbl_customerorder.Daliverydate, 4, 2) = '"+month+"' AND MID(tbl_customerorder.Daliverydate, 7, 4) = '"+year+"' AND tbl_customerorder.Salesman = '"+salesman+"'  AND tbl_customerorder.Salesmethod = '"+Satınalma+"' GROUP BY tbl_joborder.Product ").ToList();
+                    var enttiyresult = objcontext.partial_salesman.FromSqlRaw("Select tbl_customerorder.ID,tbl_joborder.Product AS PRODUCT, tbl_joborder.Amounttype AS PCSTYPE,tbl_joborder.Amount AS PCS,SUM(tbl_joborder.Price * -1) AS PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID = tbl_joborder.Upperid WHERE MID(tbl_customerorder.Daliverydate, 4, 2) = '"+month+"' AND MID(tbl_customerorder.Daliverydate, 7, 4) = '"+year+"' AND tbl_customerorder.Salesman = '"+salesman+"'  AND tbl_customerorder.Salesmethod = '"+Satınalma+"' GROUP BY tbl_joborder.Product ").ToList();
                     int IDcounter = 1;
                     foreach (var item in enttiyresult)
                     {
@@ -887,7 +865,7 @@ namespace StarNoteWebAPICore.DataAccess
                     string month = filterdate.Month.ToString("D2");
                     string year = filterdate.Year.ToString();
                    
-                    var enttiyresult = objcontext.partial_salespie.SqlQuery("SELECT tbl_customerorder.ID,tbl_customerorder.Paymentmethod AS 'PAYMENT',COUNT(tbl_customerorder.Paymentmethod)AS COUNT FROM tbl_customerorder WHERE tbl_customerorder.Salesmethod='"+Satış+"' AND MID(tbl_customerorder.Daliverydate, 4, 2) = '"+month+"'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '"+year+"' GROUP BY tbl_customerorder.Paymentmethod").ToList();
+                    var enttiyresult = objcontext.partial_salespie.FromSqlRaw("SELECT tbl_customerorder.ID,tbl_customerorder.Paymentmethod AS 'PAYMENT',COUNT(tbl_customerorder.Paymentmethod)AS COUNT FROM tbl_customerorder WHERE tbl_customerorder.Salesmethod='"+Satış+"' AND MID(tbl_customerorder.Daliverydate, 4, 2) = '"+month+"'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '"+year+"' GROUP BY tbl_customerorder.Paymentmethod").ToList();
                
                 foreach (var item in enttiyresult)
                     {
@@ -913,7 +891,7 @@ namespace StarNoteWebAPICore.DataAccess
                     string month = filterdate.Month.ToString("D2");
                     string year = filterdate.Year.ToString();
                    
-                    var enttiyresult = objcontext.partial_salespie.SqlQuery("SELECT tbl_customerorder.ID,tbl_customerorder.Paymentmethod AS 'PAYMENT',COUNT(tbl_customerorder.Paymentmethod)AS COUNT FROM tbl_customerorder WHERE tbl_customerorder.Salesmethod='" + Satınalma + "' AND MID(tbl_customerorder.Daliverydate, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' GROUP BY tbl_customerorder.Paymentmethod").ToList();
+                    var enttiyresult = objcontext.partial_salespie.FromSqlRaw("SELECT tbl_customerorder.ID,tbl_customerorder.Paymentmethod AS 'PAYMENT',COUNT(tbl_customerorder.Paymentmethod)AS COUNT FROM tbl_customerorder WHERE tbl_customerorder.Salesmethod='" + Satınalma + "' AND MID(tbl_customerorder.Daliverydate, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' GROUP BY tbl_customerorder.Paymentmethod").ToList();
                     foreach (var item in enttiyresult)
                     {
                         chartsetpurchase.Add(new DataPoint(item.PAYMENT, item.COUNT));
@@ -937,7 +915,7 @@ namespace StarNoteWebAPICore.DataAccess
                 string month = filterdate.Month.ToString("D2");
                 string year = filterdate.Year.ToString();
               
-                var enttiyresult = objcontext.partial_salespie.SqlQuery("SELECT tbl_customerorder.ID,tbl_customerorder.Salesman AS 'PAYMENT',SUM(tbl_customerorder.Price)AS COUNT FROM tbl_customerorder WHERE tbl_customerorder.Salesmethod='" + Satış + "' AND MID(tbl_customerorder.Daliverydate, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' GROUP BY tbl_customerorder.Salesman").ToList();
+                var enttiyresult = objcontext.partial_salespie.FromSqlRaw("SELECT tbl_customerorder.ID,tbl_customerorder.Salesman AS 'PAYMENT',SUM(tbl_customerorder.Price)AS COUNT FROM tbl_customerorder WHERE tbl_customerorder.Salesmethod='" + Satış + "' AND MID(tbl_customerorder.Daliverydate, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' GROUP BY tbl_customerorder.Salesman").ToList();
 
                 foreach (var item in enttiyresult)
                 {
@@ -963,7 +941,7 @@ namespace StarNoteWebAPICore.DataAccess
                     string month = filterdate.Month.ToString("D2");
                     string year = filterdate.Year.ToString();
                   
-                    var enttiyresult = objcontext.partial_salespie.SqlQuery("SELECT tbl_customerorder.ID,tbl_customerorder.Salesman AS 'PAYMENT',SUM(tbl_customerorder.Price)AS COUNT FROM tbl_customerorder WHERE tbl_customerorder.Salesmethod='" + Satınalma + "' AND MID(tbl_customerorder.Daliverydate, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' GROUP BY tbl_customerorder.Salesman").ToList();
+                    var enttiyresult = objcontext.partial_salespie.FromSqlRaw("SELECT tbl_customerorder.ID,tbl_customerorder.Salesman AS 'PAYMENT',SUM(tbl_customerorder.Price)AS COUNT FROM tbl_customerorder WHERE tbl_customerorder.Salesmethod='" + Satınalma + "' AND MID(tbl_customerorder.Daliverydate, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' GROUP BY tbl_customerorder.Salesman").ToList();
                     foreach (var item in enttiyresult)
                     {
                         chartsetpurchase.Add(new DataPoint(item.PAYMENT, item.COUNT));

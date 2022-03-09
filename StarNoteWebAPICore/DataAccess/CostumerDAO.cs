@@ -11,10 +11,7 @@ namespace StarNoteWebAPICore.DataAccess
 {
     public class CostumerDAO : BaseDAO 
     {
-        public CostumerDAO(StarNoteEntity context) : base(context)
-        {
-
-        }
+       
         public List<CostumerModel> Filllist()
         {
             List<CostumerModel> list = new List<CostumerModel>();

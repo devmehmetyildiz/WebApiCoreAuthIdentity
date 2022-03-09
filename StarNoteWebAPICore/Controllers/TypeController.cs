@@ -23,15 +23,15 @@ namespace StarNoteWebAPICore.Controllers
             dao = DAOBase.GetDAO();
         }
         //Starbase1DAO db1dataaccess = new Starbase1DAO();
-        public List<ParameterModel> GetTürList()
+        public List<TypeModel> GetTürList()
         {
-            List<ParameterModel> türlist = new List<ParameterModel>();
+            List<TypeModel> türlist = new List<TypeModel>();
             türlist = dao.GetTypeAll();
             return türlist;
         }
 
         [HttpPost]
-        public bool AddTür(ParameterModel objtür)
+        public bool AddTür(TypeModel objtür)
         {
             bool IsAdded = false;
           
@@ -41,7 +41,7 @@ namespace StarNoteWebAPICore.Controllers
         }
 
         [HttpPost]
-        public bool UpdateTür(ParameterModel objtür)
+        public bool UpdateTür(TypeModel objtür)
         {
             bool Isupdated = false;
             
@@ -51,7 +51,7 @@ namespace StarNoteWebAPICore.Controllers
         }
 
         [HttpPost]
-        public bool DeleteTür(ParameterModel objtür)
+        public bool DeleteTür(TypeModel objtür)
         {
             bool IsDeleted = false;
            

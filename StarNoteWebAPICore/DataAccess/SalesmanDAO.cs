@@ -11,9 +11,9 @@ namespace StarNoteWebAPICore.DataAccess
 {
     public class SalesmanDAO : BaseDAO
     {
-        public List<ParameterModel> GetSalesmanAll()
+        public List<SalesmanModel> GetSalesmanAll()
         {
-            List<ParameterModel> objstoklist = new List<ParameterModel>();
+            List<SalesmanModel> objstoklist = new List<SalesmanModel>();
             try
             {
                 objstoklist = objcontext.tbl_salesman.ToList();
@@ -25,7 +25,7 @@ namespace StarNoteWebAPICore.DataAccess
             return objstoklist;
         }
 
-        public bool Add(ParameterModel objnewsalesman)
+        public bool Add(SalesmanModel objnewsalesman)
         {
             bool IsAdded = false;
             try
@@ -42,14 +42,14 @@ namespace StarNoteWebAPICore.DataAccess
             return IsAdded;
         }
 
-        public bool Update(ParameterModel objsalesman)
+        public bool Update(SalesmanModel objsalesman)
         {
             bool isUpdated = false;
             try
             {
                 using (objcontext)
                 {
-                    ParameterModel güncelle = objcontext.tbl_salesman.First(i => i.Id == (objsalesman.Id));
+                    SalesmanModel güncelle = objcontext.tbl_salesman.First(i => i.Id == (objsalesman.Id));
 
                     güncelle = objsalesman;
 
@@ -64,7 +64,7 @@ namespace StarNoteWebAPICore.DataAccess
             return isUpdated;
         }
 
-        public bool Delete(ParameterModel objsalesman)
+        public bool Delete(SalesmanModel objsalesman)
         {
             bool isDeleted = false;
             try

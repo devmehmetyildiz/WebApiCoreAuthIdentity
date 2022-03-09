@@ -71,16 +71,18 @@ namespace StarNoteWebAPICore.DataAccess
                 case UsersModel model:
                     isok = userDAO.AddUser(model);
                     break;
-                case ParameterModel model:
-                    if (modeltype == BaseDAO.Salesman)
-                        isok = salesmanDAO.Add(model);
-                    if (modeltype == BaseDAO.Type)
-                        isok = typeDAO.AddTür(model);
-                    if (modeltype == BaseDAO.TypeDetail)
-                        isok = typedetailDAO.AddTür(model);
-                    if (modeltype == BaseDAO.Product)
-                        isok = productDAO.Add(model);                   
+                case SalesmanModel model:
+                    isok = salesmanDAO.Add(model);
                     break;
+                case TypeModel model:
+                    isok = typeDAO.AddTür(model);
+                    break;
+                case TypedetailModel model:
+                    isok = typedetailDAO.AddTür(model);
+                    break;
+                case ProductModel model:
+                    isok = productDAO.Add(model);
+                    break;               
             }
             return isok;
         }
@@ -101,16 +103,18 @@ namespace StarNoteWebAPICore.DataAccess
                 case UsersModel model:
                     isok = userDAO.DeleteUser(model);
                     break;
-                case ParameterModel model:
-                    if (modeltype == BaseDAO.Salesman)
-                        isok = salesmanDAO.Delete(model);
-                    if (modeltype == BaseDAO.Type)
-                        isok = typeDAO.DeleteTür(model);
-                    if (modeltype == BaseDAO.TypeDetail)
-                        isok = typedetailDAO.DeleteTür(model);
-                    if (modeltype == BaseDAO.Product)
-                        isok = productDAO.Delete(model);
+                case SalesmanModel model:
+                    isok = salesmanDAO.Delete(model);
                     break;
+                case TypeModel model:
+                    isok = typeDAO.DeleteTür(model);
+                    break;
+                case TypedetailModel model:
+                    isok = typedetailDAO.DeleteTür(model);
+                    break;
+                case ProductModel model:
+                    isok = productDAO.Delete(model);
+                    break;              
             }
             return isok;
         }
@@ -140,16 +144,19 @@ namespace StarNoteWebAPICore.DataAccess
                 case UsersModel model:
                     isok = userDAO.UpdateUser(model);
                     break;
-                case ParameterModel model:
-                    if (modeltype == BaseDAO.Salesman)
-                        isok = salesmanDAO.Update(model);
-                    if (modeltype == BaseDAO.Type)
-                        isok = typeDAO.UpdateTür(model);
-                    if (modeltype == BaseDAO.TypeDetail)
-                        isok = typedetailDAO.UpdateTür(model);
-                    if (modeltype == BaseDAO.Product)
-                        isok = productDAO.Update(model);
+                case SalesmanModel model:
+                    isok = salesmanDAO.Update(model);
                     break;
+                case TypeModel model:
+                    isok = typeDAO.UpdateTür(model);
+                    break;
+                case TypedetailModel model:
+                    isok = typedetailDAO.UpdateTür(model);
+                    break;
+                case ProductModel model:
+                    isok = productDAO.Update(model);
+                    break;
+                
             }
             return isok;
         }
@@ -157,7 +164,7 @@ namespace StarNoteWebAPICore.DataAccess
         #region maindao
         public List<string> joborderlist()
         {
-            return mainDAO.joborderlist();
+            return new List<string>();
         }
         public OrderModel Getselectedrecord(int id)
         {
@@ -224,7 +231,7 @@ namespace StarNoteWebAPICore.DataAccess
         {
             return costumerDAO.Filllist();
         }
-        public List<ParameterModel> GetSalesmanAll()
+        public List<SalesmanModel> GetSalesmanAll()
         {
             return salesmanDAO.GetSalesmanAll();
         }
@@ -236,7 +243,7 @@ namespace StarNoteWebAPICore.DataAccess
         {
             return lisanceDAO.Updatelisance(Id, status);
         }
-        public List<ParameterModel> GetAllProduct()
+        public List<ProductModel> GetAllProduct()
         {
             return productDAO.GetAll();
         }
@@ -248,11 +255,11 @@ namespace StarNoteWebAPICore.DataAccess
         {
             return filemanagementDAO.Getselectedfilelist(id);
         }      
-        public List<ParameterModel> GetTypeAll()
+        public List<TypeModel> GetTypeAll()
         {
             return typeDAO.GetTürAll();
         }        
-        public List<ParameterModel> GetTürdetayAll()
+        public List<TypedetailModel> GetTürdetayAll()
         {
             return typedetailDAO.GetTürAll();
         }       
@@ -262,7 +269,7 @@ namespace StarNoteWebAPICore.DataAccess
         {
             return remindingDAO.GetselectedRemindingrecords(Id);
         }
-        public List<ParameterModel> GetTürAllreminding()
+        public List<TypeModel> GetTürAllreminding()
         {
             return typeDAO.GetTürAll();
         }
@@ -408,6 +415,13 @@ namespace StarNoteWebAPICore.DataAccess
         {
             return analysisDAO.yearlyanalysispotansialgaugefill(datefilter, type);
         }
+
+        public UsersModel Finduser(string UserName, string Password)
+        {
+            return userDAO.Finduser(UserName, Password);
+        }
+
+
 
 
         #endregion

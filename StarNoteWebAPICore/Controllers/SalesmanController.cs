@@ -21,15 +21,15 @@ namespace StarNoteWebAPICore.Controllers
             dao = DAOBase.GetDAO();
         }
         //Starbase1DAO db1dataaccess = new Starbase1DAO();
-        public List<ParameterModel> GetSalesmanList()
+        public List<SalesmanModel> GetSalesmanList()
         {
-            List<ParameterModel> salesmanlist = new List<ParameterModel>();
+            List<SalesmanModel> salesmanlist = new List<SalesmanModel>();
             salesmanlist = dao.GetSalesmanAll();
             return salesmanlist;
         }
 
         [HttpPost]
-        public bool AddSalesman(ParameterModel objsalesman)
+        public bool AddSalesman(SalesmanModel objsalesman)
         {
             bool IsAdded = false;
           
@@ -39,7 +39,7 @@ namespace StarNoteWebAPICore.Controllers
         }
 
         [HttpPost]
-        public bool UpdateSalesman(ParameterModel objsalesman)
+        public bool UpdateSalesman(SalesmanModel objsalesman)
         {
             bool Isupdated = false;
           
@@ -49,7 +49,7 @@ namespace StarNoteWebAPICore.Controllers
         }
 
         [HttpPost]
-        public bool DeleteSalesman(ParameterModel objsalesman)
+        public bool DeleteSalesman(SalesmanModel objsalesman)
         {
             bool IsDeleted = false;
            

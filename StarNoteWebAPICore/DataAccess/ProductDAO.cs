@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StarNoteWebAPICore.EntitiyDB;
+using StarNoteWebAPICore.EntityDB;
 using StarNoteWebAPICore.Models;
 using System;
 using System.Collections.Generic;
@@ -11,14 +11,14 @@ namespace StarNoteWebAPICore.DataAccess
 {
     public class ProductDAO : BaseDAO
     {
-        public List<ParameterModel> GetAll()
+        public List<ProductModel> GetAll()
         {
-            List<ParameterModel> obj = new List<ParameterModel>();
+            List<ProductModel> obj = new List<ProductModel>();
             obj = objcontext.tbl_product.ToList();
             return obj;
         }
 
-        public bool Add(ParameterModel obj)
+        public bool Add(ProductModel obj)
         {
             bool IsAdded = false;
             try
@@ -35,14 +35,14 @@ namespace StarNoteWebAPICore.DataAccess
             return IsAdded;
         }
 
-        public bool Update(ParameterModel obj)
+        public bool Update(ProductModel obj)
         {
             bool isUpdated = false;
             try
             {
                 using (objcontext)
                 {
-                    ParameterModel güncelle = objcontext.tbl_product.First(i => i.Id == (obj.Id));
+                    ProductModel güncelle = objcontext.tbl_product.First(i => i.Id == (obj.Id));
                     güncelle = obj;
                     objcontext.SaveChanges();
                     isUpdated = true;
@@ -55,7 +55,7 @@ namespace StarNoteWebAPICore.DataAccess
             return isUpdated;
         }
 
-        public bool Delete(ParameterModel obj)
+        public bool Delete(ProductModel obj)
         {
             bool isDeleted = false;
             try

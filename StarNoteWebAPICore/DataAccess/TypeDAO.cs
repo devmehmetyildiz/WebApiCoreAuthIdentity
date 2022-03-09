@@ -11,9 +11,9 @@ namespace StarNoteWebAPICore.DataAccess
 {
     public class TypeDAO : BaseDAO
     {
-        public List<ParameterModel> GetTürAll()
+        public List<TypeModel> GetTürAll()
         {
-            List<ParameterModel> list = new List<ParameterModel>();
+            List<TypeModel> list = new List<TypeModel>();
             try
             {
                 list = objcontext.tbl_type.ToList();
@@ -25,7 +25,7 @@ namespace StarNoteWebAPICore.DataAccess
             return list;
         }
 
-        public bool AddTür(ParameterModel objtür)
+        public bool AddTür(TypeModel objtür)
         {
             bool IsAdded = false;
             try
@@ -42,14 +42,14 @@ namespace StarNoteWebAPICore.DataAccess
             return IsAdded;
         }
 
-        public bool UpdateTür(ParameterModel objtür)
+        public bool UpdateTür(TypeModel objtür)
         {
             bool isUpdated = false;
             try
             {
                 using (objcontext)
                 {
-                    ParameterModel güncelle = objcontext.tbl_type.First(i => i.Id == (objtür.Id));
+                    TypeModel güncelle = objcontext.tbl_type.First(i => i.Id == (objtür.Id));
 
                     güncelle.Parameter = objtür.Parameter;
 
@@ -64,7 +64,7 @@ namespace StarNoteWebAPICore.DataAccess
             return isUpdated;
         }
 
-        public bool DeleteTür(ParameterModel objtür)
+        public bool DeleteTür(TypeModel objtür)
         {
             bool isDeleted = false;
             try

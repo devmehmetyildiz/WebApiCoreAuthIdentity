@@ -1,30 +1,31 @@
-﻿using StarNoteWebAPICore.EntityDB;
+﻿using Microsoft.EntityFrameworkCore;
+using StarNoteWebAPICore.EntityDB;
 using StarNoteWebAPICore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
 namespace StarNoteWebAPICore.DataAccess
 {
     public class AccountingDAO : BaseDAO
     {
-       
 
+       
         #region montlyaccounting
 
         public List<DataPoint> Loadsaleschart(string datefilter)
         {
             List<DataPoint> chartsetsales = new List<DataPoint>();
-            try
-            {
+           
                 using (objcontext)
                 {
                     DateTime filterdate = Convert.ToDateTime(datefilter);
                     string lastDayOfMonth = (new DateTime(filterdate.Year, filterdate.Month, DateTime.DaysInMonth(filterdate.Year, filterdate.Month))).ToString("dd");
                     string month = filterdate.Month.ToString("D2");
                     string year = filterdate.Year.ToString();                 
-                    var enttiyresult = objcontext.partial_saleschart.SqlQuery("Select ID,Daliverydate AS RAN_DATE,SUM(PRICE) AS PRICE from tbl_customerorder WHERE Salesmethod='" + Satış + "' AND MID(Daliverydate, 4, 2) = '" + month + "'AND MID(Daliverydate, 7, 4) = '" + year + "' Group By Daliverydate").ToList();
+                    var enttiyresult = objcontext.partial_saleschart.FromSqlRaw("Select ID,Daliverydate AS RAN_DATE,SUM(PRICE) AS PRICE from tbl_customerorder WHERE Salesmethod='" + Satış + "' AND MID(Daliverydate, 4, 2) = '" + month + "'AND MID(Daliverydate, 7, 4) = '" + year + "' Group By Daliverydate").ToList();
 
                     for (int i = 1; i <= Convert.ToInt16(lastDayOfMonth); i++)
                     {
@@ -44,11 +45,7 @@ namespace StarNoteWebAPICore.DataAccess
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+           
             return chartsetsales;
         }
 
@@ -64,7 +61,7 @@ namespace StarNoteWebAPICore.DataAccess
                     string month = filterdate.Month.ToString("D2");
                     string year = filterdate.Year.ToString();
                   
-                    var enttiyresult = objcontext.partial_saleschart.SqlQuery("Select ID,Daliverydate AS RAN_DATE,SUM(PRICE) AS PRICE from tbl_customerorder WHERE Salesmethod='" + Satınalma + "' AND MID(Daliverydate, 4, 2) = '" + month + "'AND MID(Daliverydate, 7, 4) = '" + year + "' Group By Daliverydate").ToList();
+                    var enttiyresult = objcontext.partial_saleschart.FromSqlRaw("Select ID,Daliverydate AS RAN_DATE,SUM(PRICE) AS PRICE from tbl_customerorder WHERE Salesmethod='" + Satınalma + "' AND MID(Daliverydate, 4, 2) = '" + month + "'AND MID(Daliverydate, 7, 4) = '" + year + "' Group By Daliverydate").ToList();
                     for (int i = 1; i <= Convert.ToInt16(lastDayOfMonth); i++)
                     {
                         bool isadded = false;
@@ -102,7 +99,7 @@ namespace StarNoteWebAPICore.DataAccess
                     string month = filterdate.Month.ToString("D2");
                     string year = filterdate.Year.ToString();
                 
-                    var enttiyresult = objcontext.partial_salespie.SqlQuery("SELECT ID,Paymentmethod AS PAYMENT,COUNT(Paymentmethod)AS COUNT FROM tbl_customerorder WHERE Salesmethod='" + Satış + "' AND MID(Daliverydate, 4, 2) = '" + month + "'AND MID(Daliverydate, 7, 4) = '" + year + "' GROUP BY Paymentmethod").ToList();
+                    var enttiyresult = objcontext.partial_salespie.FromSqlRaw("SELECT ID,Paymentmethod AS PAYMENT,COUNT(Paymentmethod)AS COUNT FROM tbl_customerorder WHERE Salesmethod='" + Satış + "' AND MID(Daliverydate, 4, 2) = '" + month + "'AND MID(Daliverydate, 7, 4) = '" + year + "' GROUP BY Paymentmethod").ToList();
                     foreach (var item in enttiyresult)
                     {
                         chartsetsales.Add(new DataPoint(item.PAYMENT, item.COUNT));
@@ -119,25 +116,20 @@ namespace StarNoteWebAPICore.DataAccess
         public List<DataPoint> loadpurchasepies(string datefilter)
         {
             List<DataPoint> chartsetpurchase = new List<DataPoint>();
-            try
-            {
+           
                 using (objcontext)
                 {
                     DateTime filterdate = Convert.ToDateTime(datefilter);
                     string month = filterdate.Month.ToString("D2");
                     string year = filterdate.Year.ToString();
                    
-                    var enttiyresult = objcontext.partial_salespie.SqlQuery("SELECT ID,Paymentmethod AS PAYMENT,COUNT(Paymentmethod)AS COUNT FROM tbl_customerorder WHERE Salesmethod='" + Satınalma + "' AND MID(Daliverydate, 4, 2) = '" + month + "'AND MID(Daliverydate, 7, 4) = '" + year + "' GROUP BY Paymentmethod").ToList();
+                    var enttiyresult = objcontext.partial_salespie.FromSqlRaw("SELECT ID,Paymentmethod AS PAYMENT,COUNT(Paymentmethod)AS COUNT FROM tbl_customerorder WHERE Salesmethod='" + Satınalma + "' AND MID(Daliverydate, 4, 2) = '" + month + "'AND MID(Daliverydate, 7, 4) = '" + year + "' GROUP BY Paymentmethod").ToList();
                     foreach (var item in enttiyresult)
                     {
                         chartsetpurchase.Add(new DataPoint(item.PAYMENT, item.COUNT));
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+          
             return chartsetpurchase;
         }
 
@@ -246,8 +238,7 @@ namespace StarNoteWebAPICore.DataAccess
             List<DailyAccountingModel> dailysalesmodelsales = new List<DailyAccountingModel>();
             List<CostumerOrderModel> costumerlist = new List<CostumerOrderModel>();
             
-            try
-            {
+          
                 costumerlist = objcontext.tbl_customerorder.ToList();
                 int IDSales = 1;
                 foreach (var entity in costumerlist)
@@ -279,11 +270,7 @@ namespace StarNoteWebAPICore.DataAccess
                         IDSales++;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+           
             return dailysalesmodelsales;
         }
 

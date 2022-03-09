@@ -75,7 +75,7 @@ namespace StarNoteWebAPICore.DataAccess
         #endregion
 
         #region product
-        List<ParameterModel> GetAllProduct();
+        List<ProductModel> GetAllProduct();
      
         #endregion
 
@@ -89,12 +89,12 @@ namespace StarNoteWebAPICore.DataAccess
         List<RemindingModel> GetAllRecords();
         List<string> Filltypesource();
         List<string> Fillstatussource();
-        List<ParameterModel> GetTürAllreminding();
+        List<TypeModel> GetTürAllreminding();
     
         #endregion
 
         #region salesman
-        List<ParameterModel> GetSalesmanAll();     
+        List<SalesmanModel> GetSalesmanAll();     
         #endregion
 
         #region stok
@@ -105,18 +105,18 @@ namespace StarNoteWebAPICore.DataAccess
         #endregion
 
         #region type
-        List<ParameterModel> GetTypeAll();
+        List<TypeModel> GetTypeAll();
      
         #endregion
 
         #region typedetail
-        List<ParameterModel> GetTürdetayAll();
+        List<TypedetailModel> GetTürdetayAll();
        
         #endregion
 
         #region user
         List<UsersModel> Fillusermodel();
-   
+        UsersModel Finduser(string UserName, string Password);
         bool Passwordchange(UsersModel password);
         #endregion
     }

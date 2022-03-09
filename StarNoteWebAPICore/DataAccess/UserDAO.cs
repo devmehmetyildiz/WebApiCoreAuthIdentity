@@ -28,26 +28,20 @@ namespace StarNoteWebAPICore.DataAccess
         public bool AddUser(UsersModel objnewuser)
         {
             bool IsAdded = false;
-            try
-            {
+           
                
 
                 objcontext.tbl_users.Add(objnewuser);
                 var NoOFRowsAffected = objcontext.SaveChanges();
                 IsAdded = NoOFRowsAffected > 0;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+           
             return IsAdded;
         }
 
         public bool UpdateUser(UsersModel objuser)
         {
             bool isUpdated = false;
-            try
-            {
+            
                 using (objcontext)
                 {
                     UsersModel ekle = objcontext.tbl_users.First(i => i.Id == (objuser.Id));
@@ -56,19 +50,14 @@ namespace StarNoteWebAPICore.DataAccess
                     objcontext.SaveChanges();
                     isUpdated = true;
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+           
             return isUpdated;
         }
 
         public bool DeleteUser(UsersModel objuser)
         {
             bool isDeleted = false;
-            try
-            {
+            
                 using (objcontext)
                 {
                     
@@ -76,29 +65,25 @@ namespace StarNoteWebAPICore.DataAccess
                     objcontext.SaveChanges();
                     isDeleted = true;
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            
             return isDeleted;
         }
 
         public bool Passwordchange(UsersModel password)
         {
             bool isUpdated = false;
-            try
-            {
+            
                 UsersModel ekle = objcontext.tbl_users.First(i => i.Kullanıcıadi == (password.Kullanıcıadi));
                 ekle.Şifre = password.Şifre;
                 objcontext.SaveChanges();
                 isUpdated = true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            
             return isUpdated;
+        }
+
+        public UsersModel Finduser(string UserName, string Password)
+        {
+            return objcontext.tbl_users.First(i => i.Kullanıcıadi == UserName && i.Şifre == Password);
         }
     }
 }

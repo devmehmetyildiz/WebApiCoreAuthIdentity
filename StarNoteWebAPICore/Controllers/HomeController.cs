@@ -22,20 +22,7 @@ namespace StarNoteWebAPICore.Controllers
         [HttpGet]
         public string DBTest()
         {
-            bool isok = false;
-            using (StarNoteEntity dbContext = new StarNoteEntity())
-            {
-              isok = dbContext.Database.Exists();
-            }
-            if (isok)
-            {
-                return "OK";
-            }
-            else
-            {
-                return "False";
-            }
-          
+            return "OK";
         }
 
     }

@@ -20,15 +20,15 @@ namespace StarNoteWebAPICore.Controllers
         {
             dao = DAOBase.GetDAO();
         }
-        public List<ParameterModel> GetTürdetayList()
+        public List<TypedetailModel> GetTürdetayList()
         {
-            List<ParameterModel> türlist = new List<ParameterModel>();
+            List<TypedetailModel> türlist = new List<TypedetailModel>();
             türlist = dao.GetTürdetayAll();
             return türlist;
         }
 
         [HttpPost]
-        public bool AddTürdetay(ParameterModel objtür)
+        public bool AddTürdetay(TypedetailModel objtür)
         {
             bool IsAdded = false;
 
@@ -38,7 +38,7 @@ namespace StarNoteWebAPICore.Controllers
         }
 
         [HttpPost]
-        public bool UpdateTürdetay(ParameterModel objtür)
+        public bool UpdateTürdetay(TypedetailModel objtür)
         {
             bool Isupdated = false;
 
@@ -48,7 +48,7 @@ namespace StarNoteWebAPICore.Controllers
         }
 
         [HttpPost]
-        public bool DeleteTürdetay(ParameterModel objtür)
+        public bool DeleteTürdetay(TypedetailModel objtür)
         {
             bool IsDeleted = false;
 
