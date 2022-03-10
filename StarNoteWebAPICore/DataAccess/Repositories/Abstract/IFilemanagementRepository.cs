@@ -7,5 +7,6 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Abstract
 {
     public interface IFilemanagementRepository : IRepository<FilemanagementModel>
     {
+        List<FilemanagementModel> GetSelectedFiles(int Id);
     }
 }

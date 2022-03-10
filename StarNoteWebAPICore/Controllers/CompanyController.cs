@@ -29,10 +29,8 @@ namespace StarNoteWebAPICore.Controllers
         [Route("GetAll")]
         [HttpGet]
         public List<CompanyModel> GetAll()
-        {
-            List<CompanyModel> list = new List<CompanyModel>();
-            unitOfWork.CompanyRepository.GetAll();
-            return list;
+        {          
+            return unitOfWork.CompanyRepository.GetAll();
         }
 
         [HttpPost]

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StarNoteWebAPICore.DataAccess.Repositories.Abstract;
-using StarNoteWebAPICore.EntityDB;
 using StarNoteWebAPICore.Models;
 
 namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
@@ -16,6 +15,11 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
         public StokRepository(StarNoteEntity context) : base(context)
         {
             _dbSet = starnoteapicontext.Set<StokModel>();
+        }
+
+        public StokModel GetByStockNamme(string name)
+        {
+            return starnoteapicontext.tbl_stok.SingleOrDefault(u => u.Stokadı == name);
         }
     }
 }

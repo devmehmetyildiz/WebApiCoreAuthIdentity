@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StarNoteWebAPICore.DataAccess;
 using StarNoteWebAPICore.Models;
 using System;
@@ -15,53 +16,52 @@ namespace StarNoteWebAPICore.Controllers
     [ApiController]
     public class StokController : Controller
     {
-        IDAO dao;
-        StokController()
+        private readonly ILogger<StokController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+        public StokController(ILogger<StokController> logger, StarNoteEntity context)
         {
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
+        [Route("GetStokAll")]
         [HttpGet]
         public List<StokModel> GetStokAll()
         {
-            List<StokModel> response = new List<StokModel>();
-            response = dao.GetStokAll();
-            return response;
+            return unitOfWork.StokRepository.GetAll();
         }
-
+        [Route("AddStok")]
         [HttpPost]
         public bool AddStok(StokModel objstok)
         {
             bool IsAdded = false;
-            
-                IsAdded = dao.GenericAdd(objstok);
-           
+            unitOfWork.StokRepository.Add(objstok);
+            if (unitOfWork.Complate() > 0)
+                IsAdded = true;
             return IsAdded;
         }
-
+        [Route("UpdateStok")]
         [HttpPost]
         public bool UpdateStok(StokModel objstok)
         {
             bool Isupdated = false;
-           
-                Isupdated = dao.GenericUpdate(objstok);
-           
+            unitOfWork.StokRepository.update(unitOfWork.StokRepository.Getbyid(objstok.Id), objstok);
+            if (unitOfWork.Complate() > 0)
+                Isupdated = true;
             return Isupdated;
         }
-
+        [Route("GetBirimStokSource")]
         [HttpGet]
         public List<string> GetBirimStokSource()
         {
-            List<string> source = new List<string>();
-            source = dao.BirimStokSourcelist();
-            return source;
+            return unitOfWork.UnitRepository.GetAll().Select(u => u.Parameter).ToList();
         }
-
+        [Route("GetKdvStokSource")]
         [HttpGet]
         public List<string> GetKdvStokSource()
         {
-            List<string> source = new List<string>();
-            source = dao.KdvStokSourcelist();
-            return source;
+            return unitOfWork.KdvRepository.GetAll().Select(u => u.Parameter).ToList();
         }
     }
 }

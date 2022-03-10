@@ -14,5 +14,7 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Abstract
         List<CostumerOrderModel> GetAllwithRegisterdatefilter(DateTime startdate, DateTime enddate);
 
         List<CostumerOrderModel> GetAllwithDeliverydatefilter(DateTime startdate, DateTime enddate);
+
+        List<>
     }
 }

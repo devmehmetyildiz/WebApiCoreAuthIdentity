@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StarNoteWebAPICore.DataAccess.Repositories.Abstract;
-using StarNoteWebAPICore.EntityDB;
 using StarNoteWebAPICore.Models;
 using System;
 using System.Collections.Generic;

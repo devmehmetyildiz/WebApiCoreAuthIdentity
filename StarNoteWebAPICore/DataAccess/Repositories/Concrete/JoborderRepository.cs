@@ -22,5 +22,15 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
         {
             return starnoteapicontext.tbl_joborder.Where(u => u.Üstid == id).ToList();
         }
+
+        public List<JobOrderModel> Getlastordersbycount(int count)
+        {           
+            return starnoteapicontext.tbl_joborder.OrderByDescending(p => p.Id).Take(count).ToList();
+        }
+
+        public List<string> Usedstoks()
+        {
+           return starnoteapicontext.tbl_joborder.Select(u => u.Ürün2).Distinct().ToList();
+        }
     }
 }

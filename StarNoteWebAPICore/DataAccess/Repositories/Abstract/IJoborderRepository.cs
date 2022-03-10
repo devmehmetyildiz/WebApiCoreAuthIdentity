@@ -9,8 +9,9 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Abstract
     {
         List<JobOrderModel> GetByIDJobOrders(int id);
 
-        string GetJobOrder();
+        List<JobOrderModel> Getlastordersbycount(int count);
 
-
+        List<string> Usedstoks();
+        
     }
 }

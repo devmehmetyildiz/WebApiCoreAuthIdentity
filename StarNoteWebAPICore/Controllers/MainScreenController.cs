@@ -55,12 +55,79 @@ namespace StarNoteWebAPICore.Controllers
             return list;
         }
 
+        private string Createjoborderr()
+        {
+            string joborder = "";
+            try
+            {
+                int count = 0;
+                string orderID = string.Empty;
+                string month = DateTime.Now.Month.ToString("D2"), year = DateTime.Now.Year.ToString();
+                var list = unitOfWork.JoborderRepository.Getlastordersbycount(100);
+                foreach (var item in list)
+                {
+                    if (item != null && item.Joborder != null)
+                    {
+                        if (item.Joborder.Length == 8)
+                        {
+                            if (int.TryParse(item.Joborder, out int output3))
+                            {
+                                count++;
+                                bool itsyear = false, itsmonth = false, itsorderid = false;
+                                string itemyear = "20" + item.Joborder.Substring(0, 2), itemmonth = item.Joborder.Substring(2, 2), itemid = item.Joborder.Substring(4, 4);
+                                if (int.TryParse(itemyear, out int output))
+                                {
+                                    if (Convert.ToInt64(itemyear) <= 2099 && Convert.ToInt64(itemyear) >= 2020)
+                                    {
+                                        itsyear = true;
+                                    }
+                                }
+                                if (int.TryParse(itemmonth, out int output1))
+                                {
+                                    if (Convert.ToInt64(itemmonth) >= 01 && Convert.ToInt64(itemmonth) <= 12)
+                                    {
+                                        itsmonth = true;
+                                    }
+                                }
+                                if (int.TryParse(itemid, out int output2))
+                                {
+                                    itsorderid = true;
+                                }
+                                if (itsmonth && itsyear && itsorderid)
+                                {
+                                    if (itemmonth == month && itemyear == year)
+                                    {
+                                        int orderid = Convert.ToInt32(itemid) + 1;
+                                        joborder = itemyear.Substring(2, 2) + itemmonth + orderid.ToString("D4");
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        joborder = year.Substring(2, 2) + month + "0001";
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (count == 0)
+                {
+                    joborder = year.Substring(2, 2) + month + "0001";
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return joborder.ToString();
+        }
+
         [HttpGet]
         public string GetJobOrder()
         {
-            string response = "" ;
-            response = dao.Createjoborder();
-            return response;
+            return Createjoborderr();
         }
 
         [HttpPost]
@@ -72,16 +139,15 @@ namespace StarNoteWebAPICore.Controllers
                 isdava = true;
             try
             {
-
                 unitOfWork.CostumerorderRepository.Add(objmain.Costumerorder);
-                int newid = objcontext.tbl_customerorder.Max(u => (int?)u.Id) ?? 0;
+                int newid = unitOfWork.CostumerorderRepository.GetMaxId();
 
                 string joborder = "";
                 if (!isdava)
-                    joborder = Createjoborder();
+                    joborder = Createjoborderr();
 
                 int count = 1;
-                foreach (var item in model.Joborder)
+                foreach (var item in objmain.Joborder)
                 {
                     if (isdava)
                     {
@@ -90,12 +156,12 @@ namespace StarNoteWebAPICore.Controllers
                     }
                     item.Üstid = newid + 1;
                     item.Joborder = joborder;
-                    objcontext.tbl_joborder.Add(item);
+                    unitOfWork.JoborderRepository.Add(item);                    
                     if (!isdava)
                         joborder = (Convert.ToInt32(joborder) + 1).ToString();
                 }
-                var NoOFRowsAffected = objcontext.SaveChanges();
-                IsAdded = NoOFRowsAffected > 0;
+                if (unitOfWork.Complate() > 0)
+                    IsAdded = true;
 
             }
             catch (Exception ex)
@@ -109,11 +175,48 @@ namespace StarNoteWebAPICore.Controllers
         [HttpPost]
         public bool UpdateMain(OrderModel objmain)
         {
-            bool Isupdated = false;
-           
-                Isupdated = dao.GenericUpdate(objmain);
-           
-            return Isupdated;
+            bool isUpdated = false;
+            bool isdava = false;
+            if (objmain.Costumerorder.Tür != "ÖZEL MÜŞTERİLER" && objmain.Costumerorder.Tür != "ŞİRKETLER")
+                isdava = true;
+            try
+            {
+                unitOfWork.CostumerorderRepository.update(unitOfWork.CostumerorderRepository.Getbyid(objmain.Costumerorder.Id), objmain.Costumerorder);
+
+                string joborder = "";
+                if (!isdava)
+                    joborder = Createjoborderr();
+                int count = Convert.ToInt32(objmain.Joborder.Max(u => u.Joborder));
+                foreach (var item in objmain.Joborder)
+                {
+                    JobOrderModel updatejoborder = unitOfWork.JoborderRepository.Getbyid(item.Id);                    
+                    if (updatejoborder == null)
+                    {
+                        if (isdava)
+                        {
+                            count++;
+                            joborder = count.ToString();
+                        }
+                        JobOrderModel addjoborder = item;                    
+                        addjoborder.Üstid = objmain.Costumerorder.Id;
+
+                        unitOfWork.JoborderRepository.Add(addjoborder);                        
+                        joborder = (Convert.ToInt32(joborder) + 1).ToString();
+                    }
+                    else
+                    {
+                        unitOfWork.JoborderRepository.update(unitOfWork.JoborderRepository.Getbyid(item.Id), item);                        
+                    }
+
+                }
+                if (unitOfWork.Complate() > 0)
+                    isUpdated = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return isUpdated;
         }
 
         [HttpGet]
@@ -247,17 +350,27 @@ namespace StarNoteWebAPICore.Controllers
 
         public List<string> Getjoborderlist()
         {
-            List<string> list = new List<string>();
-            list = dao.joborderlist();
-            return list;
+            List<string> joborderlist = new List<string>();
+            foreach (var entitiycontext in unitOfWork.CostumerorderRepository.GetAll())
+            {
+                if (entitiycontext.Siparişno != String.Empty && entitiycontext.Savetype == 0)
+                {
+                    if (entitiycontext.Siparişno.ToString().Length == 8 || entitiycontext.Siparişno.ToString().Length == 9)
+                    {
+                        joborderlist.Add(entitiycontext.Siparişno);
+                    }
+
+                }
+            }
+            joborderlist.Sort();
+            joborderlist.Reverse();
+            return joborderlist;
         }
 
         [HttpGet]
         public StokModel Getselectedstok(string name)
         {
-            StokModel response = new StokModel();
-            response = unitOfWork.StokRepository.get
-            return response;
+            return unitOfWork.StokRepository.GetByStockNamme(name);
         }
 
       
@@ -265,17 +378,13 @@ namespace StarNoteWebAPICore.Controllers
         [HttpGet]
         public int Getnewid()
         {
-            int id = 0;
-            id = dao.lastmainid();
-            return id;            
+           return unitOfWork.CostumerorderRepository.GetMaxId();
         }
 
         [HttpGet]
         public List<FilemanagementModel> Getselectedfilelist(int id)
         {
-            List<FilemanagementModel> list = new List<FilemanagementModel>();
-            list = unitOfWork.FilemanagementRepository.Getbyid(id);
-            return list;
+            return unitOfWork.FilemanagementRepository.GetSelectedFiles(id);
         }
 
         

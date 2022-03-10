@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StarNoteWebAPICore.DataAccess;
 using StarNoteWebAPICore.Models;
 using System;
@@ -15,44 +16,49 @@ namespace StarNoteWebAPICore.Controllers
     [ApiController]
     public class TypeDetailController : ControllerBase
     {
-        IDAO dao;
-        TypeDetailController()
+        private readonly ILogger<TypeDetailController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+        public TypeDetailController(ILogger<TypeDetailController> logger, StarNoteEntity context)
         {
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
+        [Route("GetTürdetayList")]
+        [HttpGet]
         public List<TypedetailModel> GetTürdetayList()
         {
-            List<TypedetailModel> türlist = new List<TypedetailModel>();
-            türlist = dao.GetTürdetayAll();
-            return türlist;
+            return unitOfWork.TypedetailRepository.GetAll();
         }
-
+        [Route("AddTürdetay")]
         [HttpPost]
         public bool AddTürdetay(TypedetailModel objtür)
         {
             bool IsAdded = false;
-
-            IsAdded = dao.GenericAdd(objtür,0,BaseDAO.TypeDetail);
-
+            unitOfWork.TypedetailRepository.Add(objtür);
+            if (unitOfWork.Complate() > 0)
+                IsAdded = true;
             return IsAdded;
         }
-
+        [Route("UpdateTürdetay")]
         [HttpPost]
         public bool UpdateTürdetay(TypedetailModel objtür)
         {
             bool Isupdated = false;
-
-            Isupdated = dao.GenericUpdate(objtür, BaseDAO.TypeDetail);
-
+            unitOfWork.TypedetailRepository.update(unitOfWork.TypedetailRepository.Getbyid(objtür.Id), objtür);
+            if (unitOfWork.Complate() > 0)
+                Isupdated = true;
             return Isupdated;
         }
-
+        [Route("DeleteTürdetay")]
         [HttpPost]
         public bool DeleteTürdetay(TypedetailModel objtür)
         {
             bool IsDeleted = false;
-
-            IsDeleted = dao.GenericDelete(objtür, BaseDAO.TypeDetail);
+            unitOfWork.TypedetailRepository.Remove(objtür.Id);
+            if (unitOfWork.Complate() > 0)
+                IsDeleted = true;
             return IsDeleted;
         }
     }

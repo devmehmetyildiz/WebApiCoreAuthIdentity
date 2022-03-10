@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StarNoteWebAPICore.DataAccess;
 using StarNoteWebAPICore.Models;
 using System;
@@ -15,46 +16,51 @@ namespace StarNoteWebAPICore.Controllers
     [ApiController]
     public class SalesmanController : ControllerBase
     {
-        IDAO dao;
-        SalesmanController()
+        private readonly ILogger<SalesmanController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+        public SalesmanController(ILogger<SalesmanController> logger, StarNoteEntity context)
         {
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
-        //Starbase1DAO db1dataaccess = new Starbase1DAO();
+        [Route("GetAll")]
+        [HttpGet]
         public List<SalesmanModel> GetSalesmanList()
         {
-            List<SalesmanModel> salesmanlist = new List<SalesmanModel>();
-            salesmanlist = dao.GetSalesmanAll();
-            return salesmanlist;
+           return unitOfWork.SalesmanRepository.GetAll();
         }
-
         [HttpPost]
+        [Route("AddSalesman")]
         public bool AddSalesman(SalesmanModel objsalesman)
         {
             bool IsAdded = false;
-          
-                IsAdded = dao.GenericAdd(objsalesman,0,BaseDAO.Salesman);
-           
+            unitOfWork.SalesmanRepository.Add(objsalesman);
+            if (unitOfWork.Complate() > 0)
+                IsAdded = true;
             return IsAdded;
         }
 
+        [Route("UpdateSalesman")]
         [HttpPost]
         public bool UpdateSalesman(SalesmanModel objsalesman)
         {
             bool Isupdated = false;
-          
-                Isupdated = dao.GenericUpdate(objsalesman,BaseDAO.Salesman);
-           
+            unitOfWork.SalesmanRepository.update(unitOfWork.SalesmanRepository.Getbyid(objsalesman.Id), objsalesman);
+            if (unitOfWork.Complate() > 0)
+                Isupdated = true;
             return Isupdated;
         }
 
+        [Route("DeleteSalesman")]
         [HttpPost]
         public bool DeleteSalesman(SalesmanModel objsalesman)
         {
             bool IsDeleted = false;
-           
-                IsDeleted = dao.GenericDelete(objsalesman,BaseDAO.Salesman);
-           
+            unitOfWork.CompanyRepository.Remove(objsalesman.Id);
+            if (unitOfWork.Complate() > 0)
+                IsDeleted = true;
             return IsDeleted;
         }
     }

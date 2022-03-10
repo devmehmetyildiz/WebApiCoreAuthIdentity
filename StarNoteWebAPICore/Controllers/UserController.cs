@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StarNoteWebAPICore.DataAccess;
 using StarNoteWebAPICore.Models;
 using System;
@@ -16,34 +17,39 @@ namespace StarNoteWebAPICore.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        IDAO dao;
-        UserController()
+        private readonly ILogger<UserController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+        public UserController(ILogger<UserController> logger, StarNoteEntity context)
         {
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
-
+        [Route("GetUserList")]
+        [HttpGet]
         public List<UsersModel> GetUserList()
         {
-            List<UsersModel> userlist = new List<UsersModel>();
-            userlist = dao.Fillusermodel();
-            return userlist;
+            return unitOfWork.UserRepository.GetAll();
         }
 
         [HttpPost]
         public bool AddUser(UsersModel objuser)
         {
             bool IsAdded = false;
-           
-            IsAdded = dao.GenericAdd(objuser);
-            
+            unitOfWork.UserRepository.Add(objuser);
+            if (unitOfWork.Complate() > 0)
+                IsAdded = true;
             return IsAdded;
         }
 
         [HttpPost]
         public bool UpdateUser(UsersModel objuser)
         {
-            bool Isupdated = false;           
-                Isupdated = dao.GenericUpdate(objuser);            
+            bool Isupdated = false;
+            unitOfWork.UserRepository.update(unitOfWork.UserRepository.Getbyid(objuser.Id), objuser);
+            if (unitOfWork.Complate() > 0)
+                Isupdated = true;
             return Isupdated;
         }
 
@@ -51,20 +57,20 @@ namespace StarNoteWebAPICore.Controllers
         public bool DeleteUser(UsersModel objuser)
         {
             bool IsDeleted = false;
-          
-                IsDeleted = dao.GenericDelete(objuser);
-            
+            unitOfWork.UserRepository.Remove(objuser.Id);
+            if (unitOfWork.Complate() > 0)
+                IsDeleted = true;
             return IsDeleted;
         }
 
         [HttpPost]
         public bool Pwchange(UsersModel objuser)
         {
-            bool IsAdded = false;
-
-            IsAdded = dao.Passwordchange(objuser);
-
-            return IsAdded;
+            bool Isupdated = false;
+            unitOfWork.UserRepository.update(unitOfWork.UserRepository.Getbyid(objuser.Id), objuser);
+            if (unitOfWork.Complate() > 0)
+                Isupdated = true;
+            return Isupdated;
         }
     }
 }

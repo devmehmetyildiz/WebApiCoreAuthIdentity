@@ -7,5 +7,6 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Abstract
 {
     public interface IStokRepository : IRepository<StokModel>
     {
+        StokModel GetByStockNamme(string name);
     }
 }

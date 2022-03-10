@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StarNoteWebAPICore.DataAccess;
 using StarNoteWebAPICore.Models;
 using System;
@@ -17,26 +18,29 @@ namespace StarNoteWebAPICore.Controllers
 
     public class TypeController : ControllerBase 
     {
-        IDAO dao;
-        TypeController()
+        private readonly ILogger<TypeController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+        public TypeController(ILogger<TypeController> logger, StarNoteEntity context)
         {
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
-        //Starbase1DAO db1dataaccess = new Starbase1DAO();
+        [Route("GetTürList")]
+        [HttpGet]
         public List<TypeModel> GetTürList()
         {
-            List<TypeModel> türlist = new List<TypeModel>();
-            türlist = dao.GetTypeAll();
-            return türlist;
+            return unitOfWork.TypeRepository.GetAll();
         }
 
         [HttpPost]
         public bool AddTür(TypeModel objtür)
         {
             bool IsAdded = false;
-          
-                IsAdded = dao.GenericAdd(objtür,0,BaseDAO.Type);
-           
+            unitOfWork.TypeRepository.Add(objtür);
+            if (unitOfWork.Complate() > 0)
+                IsAdded = true;
             return IsAdded;
         }
 
@@ -44,9 +48,9 @@ namespace StarNoteWebAPICore.Controllers
         public bool UpdateTür(TypeModel objtür)
         {
             bool Isupdated = false;
-            
-                Isupdated = dao.GenericUpdate(objtür, BaseDAO.Type);
-
+            unitOfWork.TypeRepository.update(unitOfWork.TypeRepository.Getbyid(objtür.Id), objtür);
+            if (unitOfWork.Complate() > 0)
+                Isupdated = true;
             return Isupdated;
         }
 
@@ -54,9 +58,9 @@ namespace StarNoteWebAPICore.Controllers
         public bool DeleteTür(TypeModel objtür)
         {
             bool IsDeleted = false;
-           
-                IsDeleted = dao.GenericDelete(objtür, BaseDAO.Type);
-
+            unitOfWork.TypeRepository.Remove(objtür.Id);
+            if (unitOfWork.Complate() > 0)
+                IsDeleted = true;
             return IsDeleted;
         }
     }
