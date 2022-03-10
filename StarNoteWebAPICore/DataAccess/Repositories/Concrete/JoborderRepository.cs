@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StarNoteWebAPICore.DataAccess.Repositories.Abstract;
-using StarNoteWebAPICore.EntityDB;
 using StarNoteWebAPICore.Models;
 
 namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
@@ -17,6 +16,11 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
         public JoborderRepository(StarNoteEntity context) : base(context)
         {
             _dbSet = starnoteapicontext.Set<JobOrderModel>();
+        }
+
+        public List<JobOrderModel> GetByIDJobOrders(int id)
+        {
+            return starnoteapicontext.tbl_joborder.Where(u => u.Üstid == id).ToList();
         }
     }
 }

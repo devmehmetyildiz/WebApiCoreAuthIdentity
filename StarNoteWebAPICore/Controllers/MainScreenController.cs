@@ -8,27 +8,42 @@ using System.Net;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace StarNoteWebAPICore.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MainScreenController : ControllerBase
     {
-        IDAO dao;        
-        MainScreenController()
+        private readonly ILogger<MainScreenController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+
+        public MainScreenController(ILogger<MainScreenController> logger, StarNoteEntity context)
         {
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
-        
+
         [HttpGet]
         [Route("GetMainAll")]
         public List<OrderModel> GetMainAll()
-        {
-            OrderModel model = new OrderModel();
+        {           
             List<OrderModel> response = new List<OrderModel>();
-            response = dao.GetAll();
+            List<CostumerOrderModel> costumerorderlist = unitOfWork.CostumerorderRepository.GetAll();
+            List<JobOrderModel> joborderlist = unitOfWork.JoborderRepository.GetAll();
+            foreach (var item in costumerorderlist)
+            {
+                OrderModel model = new OrderModel
+                {
+                    Costumerorder = item,
+                    Joborder = unitOfWork.JoborderRepository.GetByIDJobOrders(item.Id)
+                };
+                response.Add(model);
+            }
             return response;
         }
 
@@ -36,7 +51,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<JobOrderModel> Getselectedjoborders(int Id)
         {
             List<JobOrderModel> list = new List<JobOrderModel>();
-            list = dao.getselectedjoborderlist(Id);
+            list = unitOfWork.JoborderRepository.GetByIDJobOrders(Id);
             return list;
         }
 
@@ -52,15 +67,42 @@ namespace StarNoteWebAPICore.Controllers
         public bool AddMain(OrderModel objmain)
         {
             bool IsAdded = false;
-            IsAdded = dao.GenericAdd(objmain, objmain.Costumerorder.Savetype);          
-            return IsAdded;
-        }
+            bool isdava = false;
+            if (objmain.Costumerorder.Tür != "ÖZEL MÜŞTERİLER" && objmain.Costumerorder.Tür != "ŞİRKETLER")
+                isdava = true;
+            try
+            {
 
-        [HttpPost]
-        public bool AddMainSoft(OrderModel objmain)
-        {
-            bool IsAdded = false;
-            IsAdded = dao.GenericAdd(objmain, 1);
+                unitOfWork.CostumerorderRepository.Add(objmain.Costumerorder);
+                int newid = objcontext.tbl_customerorder.Max(u => (int?)u.Id) ?? 0;
+
+                string joborder = "";
+                if (!isdava)
+                    joborder = Createjoborder();
+
+                int count = 1;
+                foreach (var item in model.Joborder)
+                {
+                    if (isdava)
+                    {
+                        joborder = count.ToString();
+                        count++;
+                    }
+                    item.Üstid = newid + 1;
+                    item.Joborder = joborder;
+                    objcontext.tbl_joborder.Add(item);
+                    if (!isdava)
+                        joborder = (Convert.ToInt32(joborder) + 1).ToString();
+                }
+                var NoOFRowsAffected = objcontext.SaveChanges();
+                IsAdded = NoOFRowsAffected > 0;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
             return IsAdded;
         }
 
@@ -79,18 +121,18 @@ namespace StarNoteWebAPICore.Controllers
         {
             helperclass record = new helperclass
             {
-                Ödemeyöntem = dao.GetSource("ödemeyöntem"),
-                Method = dao.GetSource("method"),
-                Durum = dao.GetSource("durum"),
-                Birim = dao.GetSource("birim"),
-                Kdv = dao.GetSource("kdv"),
-                Ürün = dao.GetSource("ürün").OrderBy(x => x).ToList(),
-                Salesman = dao.GetSource("salesman"),
-                tür = dao.GetSource("tür").OrderBy(x => x).ToList(),
-                türdetay = dao.GetSource("tür detay").OrderBy(x => x).ToList(),
-                mainürün = dao.GetSource("mainürün").OrderBy(x => x).ToList(),
-                company = dao.GetAllCompany(),
-                costumer= dao.GetAllCostumer()
+                Ödemeyöntem = unitOfWork.PaymenttypeRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList(),
+                Method = unitOfWork.ProcesstypeRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList(),
+                Durum = unitOfWork.CaseRepository.GetAll().Select(x=>x.Parameter).OrderBy(x=>x).ToList(),
+                Birim = unitOfWork.UnitRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList(),
+                Kdv = unitOfWork.KdvRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList(),
+                Ürün = unitOfWork.StokRepository.GetAll().Select(x => x.Stokadı).OrderBy(x => x).ToList(),
+                Salesman = unitOfWork.SalesmanRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList(),
+                tür = unitOfWork.TypeRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList(),
+                türdetay = unitOfWork.TypedetailRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList(),
+                mainürün = unitOfWork.ProductRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList(),
+                company = unitOfWork.CompanyRepository.GetAll(),
+                costumer= unitOfWork.CostumerRepository.GetAll()
             };        
             return record;
         }
@@ -100,7 +142,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<string> GetödemeyöntemSource()
         {
             List<string> source = new List<string>();
-            source = dao.GetSource("ödemeyöntem").OrderBy(x => x).ToList();
+            source = unitOfWork.PaymenttypeRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
 
@@ -108,7 +150,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<string> GetmethodSource()
         {
             List<string> source = new List<string>();
-            source = dao.GetSource("method");
+            source = unitOfWork.ProcesstypeRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
 
@@ -116,7 +158,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<string> GetdurumSource()
         {
             List<string> source = new List<string>();
-            source = dao.GetSource("durum");
+            source = unitOfWork.CaseRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source;
         }
 
@@ -124,7 +166,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<string> GetbirimSource()
         {
             List<string> source = new List<string>();
-            source = dao.GetSource("birim");
+            source = unitOfWork.UnitRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
 
@@ -132,7 +174,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<string> GetkdvSource()
         {
             List<string> source = new List<string>();
-            source = dao.GetSource("kdv");
+            source = unitOfWork.KdvRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source;
         }
 
@@ -140,7 +182,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<string> GetürünSource()
         {
             List<string> source = new List<string>();
-            source = dao.GetSource("ürün");
+            source = unitOfWork.StokRepository.GetAll().Select(x => x.Stokadı).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
 
@@ -148,7 +190,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<string> GetsalesmanSource()
         {
             List<string> source = new List<string>();
-            source = dao.GetSource("salesman");
+            source = unitOfWork.SalesmanRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
 
@@ -156,7 +198,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<string> GettürSource()
         {
             List<string> source = new List<string>();
-            source = dao.GetSource("tür");           
+            source = unitOfWork.TypeRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
 
@@ -164,7 +206,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<string> Gettypedetailsource()
         {
             List<string> source = new List<string>();
-            source = dao.GetSource("tür detay");
+            source = unitOfWork.TypedetailRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
 
@@ -172,7 +214,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<string> GetproductSource()
         {
             List<string> source = new List<string>();
-            source = dao.GetSource("mainürün");
+            source = unitOfWork.ProductRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
 
@@ -180,7 +222,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<CompanyModel> GetCompanySource()
         {
             List<CompanyModel> source = new List<CompanyModel>();
-            source = dao.GetAllCompany();
+            source = unitOfWork.CompanyRepository.GetAll();
             return source;
         }
 
@@ -188,15 +230,18 @@ namespace StarNoteWebAPICore.Controllers
         public List<CostumerModel> GetCostumerSource()
         {
             List<CostumerModel> source = new List<CostumerModel>();
-            source = dao.GetAllCostumer();
+            source = unitOfWork.CostumerRepository.GetAll();
             return source;
         }
 
         [HttpGet]
         public OrderModel Getselectedmodel(int ID)
         {
-            OrderModel model = new OrderModel();
-            model = dao.Getselectedrecord(ID);
+            OrderModel model = new OrderModel
+            {
+                Costumerorder = unitOfWork.CostumerorderRepository.Getbyid(ID),
+                Joborder = unitOfWork.JoborderRepository.GetByIDJobOrders(ID)
+            };
             return model;
         }
 
@@ -211,7 +256,7 @@ namespace StarNoteWebAPICore.Controllers
         public StokModel Getselectedstok(string name)
         {
             StokModel response = new StokModel();
-            response = dao.Getselectedstok(name);
+            response = unitOfWork.StokRepository.get
             return response;
         }
 
@@ -229,7 +274,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<FilemanagementModel> Getselectedfilelist(int id)
         {
             List<FilemanagementModel> list = new List<FilemanagementModel>();
-            list = dao.Getselectedfilelist(id);
+            list = unitOfWork.FilemanagementRepository.Getbyid(id);
             return list;
         }
 

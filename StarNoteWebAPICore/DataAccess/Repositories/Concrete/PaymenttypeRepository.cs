@@ -9,14 +9,14 @@ using StarNoteWebAPICore.Models;
 
 namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
 {
-    public class PaymenttypeRepository : Repository<CaseModel>, ICaseRepository
+    public class PaymenttypeRepository : Repository<PaymenttypeModel>, IPaymenttypeRepository
     {
         public StarNoteEntity starnoteapicontext { get { return _context as StarNoteEntity; } }
 
-        private DbSet<CaseModel> _dbSet;
-        public CaseRepository(StarNoteEntity context) : base(context)
+        private DbSet<PaymenttypeModel> _dbSet;
+        public PaymenttypeRepository(StarNoteEntity context) : base(context)
         {
-            _dbSet = starnoteapicontext.Set<CaseModel>();
+            _dbSet = starnoteapicontext.Set<PaymenttypeModel>();
         }
     }
 }

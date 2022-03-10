@@ -9,14 +9,14 @@ using StarNoteWebAPICore.Models;
 
 namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
 {
-    public class ProductRepository : Repository<CaseModel>, ICaseRepository
+    public class ProductRepository : Repository<ProductModel>, IProductRepository
     {
         public StarNoteEntity starnoteapicontext { get { return _context as StarNoteEntity; } }
 
-        private DbSet<CaseModel> _dbSet;
-        public CaseRepository(StarNoteEntity context) : base(context)
+        private DbSet<ProductModel> _dbSet;
+        public ProductRepository(StarNoteEntity context) : base(context)
         {
-            _dbSet = starnoteapicontext.Set<CaseModel>();
+            _dbSet = starnoteapicontext.Set<ProductModel>();
         }
     }
 }

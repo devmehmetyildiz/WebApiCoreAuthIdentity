@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using StarNoteWebAPICore.Models;
-namespace StarNoteWebAPICore.EntityDB
+
+namespace StarNoteWebAPICore.DataAccess
 {
     public class StarNoteEntity : DbContext
     {

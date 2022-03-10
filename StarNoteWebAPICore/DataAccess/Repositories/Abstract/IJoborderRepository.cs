@@ -7,5 +7,10 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Abstract
 {
     public interface IJoborderRepository : IRepository<JobOrderModel>
     {
+        List<JobOrderModel> GetByIDJobOrders(int id);
+
+        string GetJobOrder();
+
+
     }
 }

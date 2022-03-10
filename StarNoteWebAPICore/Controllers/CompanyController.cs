@@ -7,55 +7,62 @@ using StarNoteWebAPICore.Models;
 using StarNoteWebAPICore.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace StarNoteWebAPICore.Controllers
 {
-   // [Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        IDAO dao;
-        public CompanyController()
+        private readonly ILogger<CompanyController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+        public CompanyController(ILogger<CompanyController> logger, StarNoteEntity context)
         {
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
-        CompanyDAO dataaccess = new CompanyDAO();
+       
         [Route("GetAll")]
-            public List<CompanyModel> GetAll()
-            {
-                List<CompanyModel> list = new List<CompanyModel>();
-                list = dao.GetAllCompany();
-                return list;
-            }
-    
-            [HttpPost]
-            public bool Add(CompanyModel obj)
-            {
-                bool IsAdded = false;
-               
-                    IsAdded = dao.GenericAdd(obj);
-               
-                return IsAdded;
-            }
+        [HttpGet]
+        public List<CompanyModel> GetAll()
+        {
+            List<CompanyModel> list = new List<CompanyModel>();
+            unitOfWork.CompanyRepository.GetAll();
+            return list;
+        }
 
+        [HttpPost]
+        [Route("Add")]
+        public bool Add(CompanyModel obj)
+        {
+            bool IsAdded = false;
+            unitOfWork.CompanyRepository.Add(obj);
+            if (unitOfWork.Complate() > 0)
+                IsAdded = true;
+            return IsAdded;
+        }
+        [Route("Update")]
         [HttpPost]
         public bool Update(CompanyModel obj)
         {
             bool Isupdated = false;
-           
-                Isupdated = dao.GenericUpdate(obj);
-           
+            unitOfWork.CompanyRepository.update(unitOfWork.CompanyRepository.Getbyid(obj.Id), obj);
+            if (unitOfWork.Complate() > 0)
+                Isupdated = true;
             return Isupdated;
         }
-
+        [Route("Delete")]
         [HttpPost]
         public bool Delete(CompanyModel obj)
         {
             bool IsDeleted = false;
-          
-                IsDeleted = dao.GenericDelete(obj);
-           
+            unitOfWork.CompanyRepository.Remove(obj.Id);
+            if (unitOfWork.Complate() > 0)
+                IsDeleted = true;
             return IsDeleted;
         }
     }

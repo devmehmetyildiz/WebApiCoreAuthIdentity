@@ -9,14 +9,14 @@ using StarNoteWebAPICore.Models;
 
 namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
 {
-    public class RememberstatusRepository : Repository<CaseModel>, ICaseRepository
+    public class RememberstatusRepository : Repository<RememberstatusModel>, IRememberstatusRepository
     {
         public StarNoteEntity starnoteapicontext { get { return _context as StarNoteEntity; } }
 
-        private DbSet<CaseModel> _dbSet;
-        public CaseRepository(StarNoteEntity context) : base(context)
+        private DbSet<RememberstatusModel> _dbSet;
+        public RememberstatusRepository(StarNoteEntity context) : base(context)
         {
-            _dbSet = starnoteapicontext.Set<CaseModel>();
+            _dbSet = starnoteapicontext.Set<RememberstatusModel>();
         }
     }
 }

@@ -9,14 +9,14 @@ using StarNoteWebAPICore.Models;
 
 namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
 {
-    public class ProcesstypeRepository : Repository<CaseModel>, ICaseRepository
+    public class ProcesstypeRepository : Repository<ProcesstypeModel>, IProcesstypeRepository
     {
         public StarNoteEntity starnoteapicontext { get { return _context as StarNoteEntity; } }
 
-        private DbSet<CaseModel> _dbSet;
-        public CaseRepository(StarNoteEntity context) : base(context)
+        private DbSet<ProcesstypeModel> _dbSet;
+        public ProcesstypeRepository(StarNoteEntity context) : base(context)
         {
-            _dbSet = starnoteapicontext.Set<CaseModel>();
+            _dbSet = starnoteapicontext.Set<ProcesstypeModel>();
         }
     }
 }

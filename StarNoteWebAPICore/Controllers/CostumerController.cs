@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StarNoteWebAPICore.DataAccess;
 using StarNoteWebAPICore.Models;
 using System;
@@ -15,45 +16,54 @@ namespace StarNoteWebAPICore.Controllers
     [ApiController]
     public class CostumerController : ControllerBase
     {
-        IDAO dao;
-        CostumerController()
+        private readonly ILogger<CostumerController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+        public CostumerController(ILogger<CostumerController> logger, StarNoteEntity context)
         {
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
+        [Route("GetAll")]
+        [HttpGet]
         public List<CostumerModel> GetAll()
         {
             List<CostumerModel> list = new List<CostumerModel>();
-            list = dao.GetAllCostumer();
+            unitOfWork.CostumerRepository.GetAll();
             return list;
         }
 
         [HttpPost]
+        [Route("Add")]
         public bool Add(CostumerModel obj)
         {
             bool IsAdded = false;
-           
-                IsAdded = dao.GenericAdd(obj);
-            
+            unitOfWork.CostumerRepository.Add(obj);
+            if (unitOfWork.Complate() > 0)
+                IsAdded = true;
             return IsAdded;
         }
 
         [HttpPost]
+        [Route("Update")]
         public bool Update(CostumerModel obj)
         {
             bool Isupdated = false;
-           
-                Isupdated = dao.GenericUpdate(obj);
-           
+            unitOfWork.CostumerRepository.update(unitOfWork.CostumerRepository.Getbyid(obj.Id), obj);
+            if (unitOfWork.Complate() > 0)
+                Isupdated = true;
             return Isupdated;
         }
 
         [HttpPost]
+        [Route("Delete")]
         public bool Delete(CostumerModel obj)
         {
             bool IsDeleted = false;
-           
-                IsDeleted = dao.GenericDelete(obj);
-            
+            unitOfWork.CostumerRepository.Remove(obj.Id);
+            if (unitOfWork.Complate() > 0)
+                IsDeleted = true;
             return IsDeleted;
         }
     }

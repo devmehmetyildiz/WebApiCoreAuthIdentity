@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StarNoteWebAPICore.DataAccess;
 using StarNoteWebAPICore.Models;
 using System;
@@ -16,33 +17,33 @@ namespace StarNoteWebAPICore.Controllers
 
     public class LisanceController : ControllerBase
     {
-        IDAO dao;
-        LisanceController()
+       
+        private readonly ILogger<LisanceController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+        public LisanceController(ILogger<LisanceController> logger, StarNoteEntity context)
         {
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
 
+        [Route("GetAll")]
         [HttpGet]
-        public List<LisanceModel> GetLisanceAll()
+        public List<LisanceModel> GetAll()
         {
             List<LisanceModel> response = new List<LisanceModel>();
-            response = dao.GetAllLisance();
+            unitOfWork.LisanceRepository.GetAll();
             return response;
         }
-
-        [HttpGet]
-        public List<LisanceModel> Updatestatus(int id,string status)
-        {
-            List<LisanceModel> response = new List<LisanceModel>();
-            //response = dataaccess.GetAll(count);
-            return response;
-        }
-
+        [Route("AddLisance")]
         [HttpPost]
         public bool AddLisance(LisanceModel lisancemodel)
         {
             bool IsAdded = false;
-            IsAdded = dao.GenericAdd(lisancemodel);
+            unitOfWork.LisanceRepository.Add(lisancemodel);
+            if (unitOfWork.Complate() > 0)
+                IsAdded = true;
             return IsAdded;
         }
 

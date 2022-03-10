@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StarNoteWebAPICore.DataAccess;
 using StarNoteWebAPICore.Models;
 using System;
@@ -15,36 +16,43 @@ namespace StarNoteWebAPICore.Controllers
     [ApiController]
     public class FileManagementController : ControllerBase
     {
-        IDAO dao;
-        FileManagementController()
+        private readonly ILogger<FileManagementController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+        public FileManagementController(ILogger<FileManagementController> logger, StarNoteEntity context)
         {
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
-
+        [Route("GetAll")]
+        [HttpGet]
         public List<FilemanagementModel> Getfilelist()
         {
             List<FilemanagementModel> filelist = new List<FilemanagementModel>();
-            filelist = dao.GetFileListAll();
+            unitOfWork.FilemanagementRepository.GetAll();
             return filelist;
         }
 
         [HttpPost]
+        [Route("AddFile")]
         public bool AddFile(FilemanagementModel objfile)
         {
             bool IsAdded = false;
-           
-                IsAdded = dao.GenericAdd(objfile);
-           
+            unitOfWork.FilemanagementRepository.Add(objfile);
+            if (unitOfWork.Complate() > 0)
+                IsAdded = true;
             return IsAdded;
         }
 
         [HttpPost]
+        [Route("Delete")]
         public bool Delete(FilemanagementModel obj)
         {
             bool IsDeleted = false;
-           
-                IsDeleted = dao.GenericDelete(obj);
-           
+            unitOfWork.FilemanagementRepository.Remove(obj.Id);
+            if (unitOfWork.Complate() > 0)
+                IsDeleted = true;
             return IsDeleted;
         }
         
