@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StarNoteWebAPICore.EntityDB;
+using StarNoteWebAPICore.DataAccess;
 
 namespace StarNoteWebAPICore.Migrations
 {

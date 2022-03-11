@@ -7,5 +7,6 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Abstract
 {
     public interface IUserRepository : IRepository<UsersModel>
     {
+        UsersModel Finduser(string username, string password);
     }
 }

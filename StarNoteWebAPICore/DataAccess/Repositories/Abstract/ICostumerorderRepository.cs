@@ -15,6 +15,18 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Abstract
 
         List<CostumerOrderModel> GetAllwithDeliverydatefilter(DateTime startdate, DateTime enddate);
 
-        List<>
+        List<partial_analysis> GetAnalysisMontlyAll(string satıs, string satınalma, string month, string year);
+        List<partial_analysis> GetAnalysisMontly(string satıs, string satınalma, string month, string year,string type,string stokname);
+        string Getmontlysalesgauge(string type, string date);
+        string Getmontlypurchasegauge(string type, string date);
+        string Getmontlynetgauge(string type, string date);
+        string Getmontlypotasialgauege(string type, string date);
+
+        List<partial_analysis> GetAnalysisYearlyAll(string satıs, string satınalma, string month, string year);
+        List<partial_analysis> GetAnalysisYearly(string satıs, string satınalma, string month, string year, string type, string stokname);
+        string GetYearlysalesgauge(string type, string date);
+        string GetYearlypurchasegauge(string type, string date);
+        string GetYearlynetgauge(string type, string date);
+        string GetYearlypotasialgauege(string type, string date);
     }
 }

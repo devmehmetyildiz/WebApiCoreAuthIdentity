@@ -32,7 +32,7 @@ namespace StarNoteWebAPICore.Controllers
         [Route("GetMainAll")]
         public List<OrderModel> GetMainAll()
         {           
-            List<OrderModel> response = new List<OrderModel>();
+            List<OrderModel> response = new();
             List<CostumerOrderModel> costumerorderlist = unitOfWork.CostumerorderRepository.GetAll();
             List<JobOrderModel> joborderlist = unitOfWork.JoborderRepository.GetAll();
             foreach (var item in costumerorderlist)
@@ -40,7 +40,7 @@ namespace StarNoteWebAPICore.Controllers
                 OrderModel model = new OrderModel
                 {
                     Costumerorder = item,
-                    Joborder = unitOfWork.JoborderRepository.GetByIDJobOrders(item.Id)
+                    Joborder = joborderlist.Where(u=>u.Üstid==item.Id).ToList()
                 };
                 response.Add(model);
             }
@@ -58,68 +58,61 @@ namespace StarNoteWebAPICore.Controllers
         private string Createjoborderr()
         {
             string joborder = "";
-            try
+            int count = 0;
+            string orderID = string.Empty;
+            string month = DateTime.Now.Month.ToString("D2"), year = DateTime.Now.Year.ToString();
+            var list = unitOfWork.JoborderRepository.Getlastordersbycount(100);
+            foreach (var item in list)
             {
-                int count = 0;
-                string orderID = string.Empty;
-                string month = DateTime.Now.Month.ToString("D2"), year = DateTime.Now.Year.ToString();
-                var list = unitOfWork.JoborderRepository.Getlastordersbycount(100);
-                foreach (var item in list)
+                if (item != null && item.Joborder != null)
                 {
-                    if (item != null && item.Joborder != null)
+                    if (item.Joborder.Length == 8)
                     {
-                        if (item.Joborder.Length == 8)
+                        if (int.TryParse(item.Joborder, out int output3))
                         {
-                            if (int.TryParse(item.Joborder, out int output3))
+                            count++;
+                            bool itsyear = false, itsmonth = false, itsorderid = false;
+                            string itemyear = "20" + item.Joborder.Substring(0, 2), itemmonth = item.Joborder.Substring(2, 2), itemid = item.Joborder.Substring(4, 4);
+                            if (int.TryParse(itemyear, out int output))
                             {
-                                count++;
-                                bool itsyear = false, itsmonth = false, itsorderid = false;
-                                string itemyear = "20" + item.Joborder.Substring(0, 2), itemmonth = item.Joborder.Substring(2, 2), itemid = item.Joborder.Substring(4, 4);
-                                if (int.TryParse(itemyear, out int output))
+                                if (Convert.ToInt64(itemyear) <= 2099 && Convert.ToInt64(itemyear) >= 2020)
                                 {
-                                    if (Convert.ToInt64(itemyear) <= 2099 && Convert.ToInt64(itemyear) >= 2020)
-                                    {
-                                        itsyear = true;
-                                    }
+                                    itsyear = true;
                                 }
-                                if (int.TryParse(itemmonth, out int output1))
+                            }
+                            if (int.TryParse(itemmonth, out int output1))
+                            {
+                                if (Convert.ToInt64(itemmonth) >= 01 && Convert.ToInt64(itemmonth) <= 12)
                                 {
-                                    if (Convert.ToInt64(itemmonth) >= 01 && Convert.ToInt64(itemmonth) <= 12)
-                                    {
-                                        itsmonth = true;
-                                    }
+                                    itsmonth = true;
                                 }
-                                if (int.TryParse(itemid, out int output2))
+                            }
+                            if (int.TryParse(itemid, out int output2))
+                            {
+                                itsorderid = true;
+                            }
+                            if (itsmonth && itsyear && itsorderid)
+                            {
+                                if (itemmonth == month && itemyear == year)
                                 {
-                                    itsorderid = true;
+                                    int orderid = Convert.ToInt32(itemid) + 1;
+                                    joborder = itemyear.Substring(2, 2) + itemmonth + orderid.ToString("D4");
+                                    break;
                                 }
-                                if (itsmonth && itsyear && itsorderid)
+                                else
                                 {
-                                    if (itemmonth == month && itemyear == year)
-                                    {
-                                        int orderid = Convert.ToInt32(itemid) + 1;
-                                        joborder = itemyear.Substring(2, 2) + itemmonth + orderid.ToString("D4");
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        joborder = year.Substring(2, 2) + month + "0001";
-                                        break;
-                                    }
+                                    joborder = year.Substring(2, 2) + month + "0001";
+                                    break;
                                 }
                             }
                         }
                     }
                 }
-                if (count == 0)
-                {
-                    joborder = year.Substring(2, 2) + month + "0001";
-
-                }
             }
-            catch (Exception ex)
+            if (count == 0)
             {
-                throw ex;
+                joborder = year.Substring(2, 2) + month + "0001";
+
             }
             return joborder.ToString();
         }
@@ -137,38 +130,29 @@ namespace StarNoteWebAPICore.Controllers
             bool isdava = false;
             if (objmain.Costumerorder.Tür != "ÖZEL MÜŞTERİLER" && objmain.Costumerorder.Tür != "ŞİRKETLER")
                 isdava = true;
-            try
+            unitOfWork.CostumerorderRepository.Add(objmain.Costumerorder);
+            int newid = unitOfWork.CostumerorderRepository.GetMaxId();
+
+            string joborder = "";
+            if (!isdava)
+                joborder = Createjoborderr();
+
+            int count = 1;
+            foreach (var item in objmain.Joborder)
             {
-                unitOfWork.CostumerorderRepository.Add(objmain.Costumerorder);
-                int newid = unitOfWork.CostumerorderRepository.GetMaxId();
-
-                string joborder = "";
-                if (!isdava)
-                    joborder = Createjoborderr();
-
-                int count = 1;
-                foreach (var item in objmain.Joborder)
+                if (isdava)
                 {
-                    if (isdava)
-                    {
-                        joborder = count.ToString();
-                        count++;
-                    }
-                    item.Üstid = newid + 1;
-                    item.Joborder = joborder;
-                    unitOfWork.JoborderRepository.Add(item);                    
-                    if (!isdava)
-                        joborder = (Convert.ToInt32(joborder) + 1).ToString();
+                    joborder = count.ToString();
+                    count++;
                 }
-                if (unitOfWork.Complate() > 0)
-                    IsAdded = true;
-
+                item.Üstid = newid + 1;
+                item.Joborder = joborder;
+                unitOfWork.JoborderRepository.Add(item);
+                if (!isdava)
+                    joborder = (Convert.ToInt32(joborder) + 1).ToString();
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
+            if (unitOfWork.Complate() > 0)
+                IsAdded = true;
             return IsAdded;
         }
 
@@ -179,43 +163,35 @@ namespace StarNoteWebAPICore.Controllers
             bool isdava = false;
             if (objmain.Costumerorder.Tür != "ÖZEL MÜŞTERİLER" && objmain.Costumerorder.Tür != "ŞİRKETLER")
                 isdava = true;
-            try
+            unitOfWork.CostumerorderRepository.update(unitOfWork.CostumerorderRepository.Getbyid(objmain.Costumerorder.Id), objmain.Costumerorder);
+            string joborder = "";
+            if (!isdava)
+                joborder = Createjoborderr();
+            int count = Convert.ToInt32(objmain.Joborder.Max(u => u.Joborder));
+            foreach (var item in objmain.Joborder)
             {
-                unitOfWork.CostumerorderRepository.update(unitOfWork.CostumerorderRepository.Getbyid(objmain.Costumerorder.Id), objmain.Costumerorder);
-
-                string joborder = "";
-                if (!isdava)
-                    joborder = Createjoborderr();
-                int count = Convert.ToInt32(objmain.Joborder.Max(u => u.Joborder));
-                foreach (var item in objmain.Joborder)
+                JobOrderModel updatejoborder = unitOfWork.JoborderRepository.Getbyid(item.Id);
+                if (updatejoborder == null)
                 {
-                    JobOrderModel updatejoborder = unitOfWork.JoborderRepository.Getbyid(item.Id);                    
-                    if (updatejoborder == null)
+                    if (isdava)
                     {
-                        if (isdava)
-                        {
-                            count++;
-                            joborder = count.ToString();
-                        }
-                        JobOrderModel addjoborder = item;                    
-                        addjoborder.Üstid = objmain.Costumerorder.Id;
-
-                        unitOfWork.JoborderRepository.Add(addjoborder);                        
-                        joborder = (Convert.ToInt32(joborder) + 1).ToString();
+                        count++;
+                        joborder = count.ToString();
                     }
-                    else
-                    {
-                        unitOfWork.JoborderRepository.update(unitOfWork.JoborderRepository.Getbyid(item.Id), item);                        
-                    }
+                    JobOrderModel addjoborder = item;
+                    addjoborder.Üstid = objmain.Costumerorder.Id;
 
+                    unitOfWork.JoborderRepository.Add(addjoborder);
+                    joborder = (Convert.ToInt32(joborder) + 1).ToString();
                 }
-                if (unitOfWork.Complate() > 0)
-                    isUpdated = true;
+                else
+                {
+                    unitOfWork.JoborderRepository.update(unitOfWork.JoborderRepository.Getbyid(item.Id), item);
+                }
+
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            if (unitOfWork.Complate() > 0)
+                isUpdated = true;
             return isUpdated;
         }
 
@@ -284,7 +260,7 @@ namespace StarNoteWebAPICore.Controllers
         [HttpGet]
         public List<string> GetürünSource()
         {
-            List<string> source = new List<string>();
+            List<string> source = new();
             source = unitOfWork.StokRepository.GetAll().Select(x => x.Stokadı).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
@@ -292,7 +268,7 @@ namespace StarNoteWebAPICore.Controllers
         [HttpGet]
         public List<string> GetsalesmanSource()
         {
-            List<string> source = new List<string>();
+            List<string> source = new();
             source = unitOfWork.SalesmanRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
@@ -300,7 +276,7 @@ namespace StarNoteWebAPICore.Controllers
         [HttpGet]
         public List<string> GettürSource()
         {
-            List<string> source = new List<string>();
+            List<string> source = new();
             source = unitOfWork.TypeRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
@@ -308,7 +284,7 @@ namespace StarNoteWebAPICore.Controllers
         [HttpGet]
         public List<string> Gettypedetailsource()
         {
-            List<string> source = new List<string>();
+            List<string> source = new();
             source = unitOfWork.TypedetailRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
@@ -316,7 +292,7 @@ namespace StarNoteWebAPICore.Controllers
         [HttpGet]
         public List<string> GetproductSource()
         {
-            List<string> source = new List<string>();
+            List<string> source = new();
             source = unitOfWork.ProductRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }

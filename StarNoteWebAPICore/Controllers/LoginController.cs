@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using StarNoteWebAPICore.DataAccess;
 using StarNoteWebAPICore.Models;
@@ -21,12 +22,15 @@ namespace StarNoteWebAPICore.Controllers
     public class LoginController : ControllerBase
     {
         private IConfiguration _config;
-        IDAO dao;
-      
-        public LoginController(IConfiguration config)
+        private readonly ILogger<LoginController> _logger;
+        private readonly StarNoteEntity _context;
+        UnitOfWork unitOfWork;
+        public LoginController(IConfiguration config,ILogger<LoginController> logger, StarNoteEntity context)
         {
             _config = config;
-            dao = DAOBase.GetDAO();
+            _logger = logger;
+            _context = context;
+            unitOfWork = new UnitOfWork(context);
         }
 
         [AllowAnonymous]
@@ -66,8 +70,8 @@ namespace StarNoteWebAPICore.Controllers
         }
 
         private UsersModel Authenticate(UserCredential userLogin)
-        {
-            var currentUser = dao.Finduser(userLogin.UserName, userLogin.Password);          
+        {         
+            var currentUser = unitOfWork.UserRepository.Finduser(userLogin.UserName, userLogin.Password);
             if (currentUser != null)
             {
                 return currentUser;

@@ -16,23 +16,19 @@ namespace StarNoteWebAPICore.Controllers
 
     public class DailyAccountingController : ControllerBase
     {
-        IDAO dao;
-        DailyAccountingController()
-        {
-            dao = DAOBase.GetDAO();
-        }
+       
         [HttpGet]
         public List<DailyAccountingModel> GetDailySales(string date)
         {
             List<DailyAccountingModel> DailySales = new List<DailyAccountingModel>();
-            DailySales = dao.dailysalesfill(date);
+            //DailySales = dao.dailysalesfill(date);
             return DailySales;
         }
         [HttpGet]
         public List<DailyAccountingModel> GetPurchaseSales(string date)
         {
             List<DailyAccountingModel> DailyPurchase = new List<DailyAccountingModel>();
-            DailyPurchase = dao.dailypurchasefill(date);
+            //DailyPurchase = dao.dailypurchasefill(date);
             return DailyPurchase;
         }
 
@@ -40,7 +36,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<GaugeModel> GetDailygaugevalues(string date)
         {
             List<GaugeModel> gaugelist = new List<GaugeModel>();
-            gaugelist = dao.dailysalesgaugefill(date);
+            //gaugelist = dao.dailysalesgaugefill(date);
             return gaugelist;
         }
 
@@ -48,7 +44,7 @@ namespace StarNoteWebAPICore.Controllers
         public List<GaugeModel> GetDailysalesgaugevalues(string date)
         {
             List<GaugeModel> gaugelist = new List<GaugeModel>();
-            gaugelist = dao.dailypurchasegaugefill(date);
+            //gaugelist = dao.dailypurchasegaugefill(date);
             return gaugelist;
         }
     }

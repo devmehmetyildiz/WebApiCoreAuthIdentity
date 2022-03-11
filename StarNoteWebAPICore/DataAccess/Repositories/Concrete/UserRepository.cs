@@ -17,5 +17,10 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
         {
             _dbSet = starnoteapicontext.Set<UsersModel>();
         }
+
+        public UsersModel Finduser(string username, string password)
+        {
+            return starnoteapicontext.tbl_users.FirstOrDefault(u => u.Kullanıcıadi == username && u.Şifre == password);
+        }
     }
 }
