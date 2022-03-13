@@ -32,6 +32,7 @@ namespace StarNoteWebAPICore.Controllers
             _context = context;
             unitOfWork = new UnitOfWork(context);
         }
+        [Route("GetYearlyAnalysis")]
         [HttpGet]
         public List<AnalysisYearlyModel> GetYearlyAnalysis(string date, string type)
         {
@@ -169,7 +170,7 @@ namespace StarNoteWebAPICore.Controllers
             return analysis;
         }
 
-
+        [Route("Getyearlysalesgauge")]
         [HttpGet]
         public List<string> Getyearlysalesgauge(string date, string type)
         {
@@ -179,7 +180,7 @@ namespace StarNoteWebAPICore.Controllers
             };
             return output;
         }
-
+        [Route("Getyearlypurchasegauge")]
         [HttpGet]
         public List<string> Getyearlypurchasegauge(string date, string type)
         {
@@ -187,7 +188,7 @@ namespace StarNoteWebAPICore.Controllers
             output.Add(unitOfWork.CostumerorderRepository.GetYearlypurchasegauge(type, date));
             return output;
         }
-
+        [Route("Getyearlynetgauge")]
         [HttpGet]
         public List<string> Getyearlynetgauge(string date, string type)
         {
@@ -197,7 +198,7 @@ namespace StarNoteWebAPICore.Controllers
             };
             return output;
         }
-
+        [Route("Getyearlypotansialgauge")]
         [HttpGet]
         public List<string> Getyearlypotansialgauge(string date, string type)
         {

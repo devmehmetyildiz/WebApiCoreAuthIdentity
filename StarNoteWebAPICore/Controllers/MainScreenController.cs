@@ -27,9 +27,8 @@ namespace StarNoteWebAPICore.Controllers
             _context = context;
             unitOfWork = new UnitOfWork(context);
         }
-
-        [HttpGet]
         [Route("GetMainAll")]
+        [HttpGet]       
         public List<OrderModel> GetMainAll()
         {           
             List<OrderModel> response = new();
@@ -46,7 +45,7 @@ namespace StarNoteWebAPICore.Controllers
             }
             return response;
         }
-
+        [Route("Getselectedjoborders")]
         [HttpGet]
         public List<JobOrderModel> Getselectedjoborders(int Id)
         {
@@ -116,13 +115,13 @@ namespace StarNoteWebAPICore.Controllers
             }
             return joborder.ToString();
         }
-
+        [Route("GetJobOrder")]
         [HttpGet]
         public string GetJobOrder()
         {
             return Createjoborderr();
         }
-
+        [Route("AddMain")]
         [HttpPost]
         public bool AddMain(OrderModel objmain)
         {
@@ -155,7 +154,7 @@ namespace StarNoteWebAPICore.Controllers
                 IsAdded = true;
             return IsAdded;
         }
-
+        [Route("UpdateMain")]
         [HttpPost]
         public bool UpdateMain(OrderModel objmain)
         {
@@ -194,7 +193,7 @@ namespace StarNoteWebAPICore.Controllers
                 isUpdated = true;
             return isUpdated;
         }
-
+        [Route("Getsources")]
         [HttpGet]
         public helperclass Getsources()
         {
@@ -216,7 +215,7 @@ namespace StarNoteWebAPICore.Controllers
             return record;
         }
 
-
+        [Route("GetödemeyöntemSource")]
         [HttpGet]
         public List<string> GetödemeyöntemSource()
         {
@@ -224,7 +223,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.PaymenttypeRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
-
+        [Route("GetmethodSource")]
         [HttpGet]
         public List<string> GetmethodSource()
         {
@@ -232,7 +231,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.ProcesstypeRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
-
+        [Route("GetdurumSource")]
         [HttpGet]
         public List<string> GetdurumSource()
         {
@@ -240,7 +239,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.CaseRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source;
         }
-
+        [Route("GetbirimSource")]
         [HttpGet]
         public List<string> GetbirimSource()
         {
@@ -248,7 +247,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.UnitRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
-
+        [Route("GetkdvSource")]
         [HttpGet]
         public List<string> GetkdvSource()
         {
@@ -256,7 +255,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.KdvRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source;
         }
-
+        [Route("GetürünSource")]
         [HttpGet]
         public List<string> GetürünSource()
         {
@@ -264,7 +263,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.StokRepository.GetAll().Select(x => x.Stokadı).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
-
+        [Route("GetsalesmanSource")]
         [HttpGet]
         public List<string> GetsalesmanSource()
         {
@@ -272,7 +271,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.SalesmanRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
-
+        [Route("GettürSource")]
         [HttpGet]
         public List<string> GettürSource()
         {
@@ -280,7 +279,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.TypeRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
-
+        [Route("Gettypedetailsource")]
         [HttpGet]
         public List<string> Gettypedetailsource()
         {
@@ -288,7 +287,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.TypedetailRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
-
+        [Route("GetproductSource")]
         [HttpGet]
         public List<string> GetproductSource()
         {
@@ -296,7 +295,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.ProductRepository.GetAll().Select(x => x.Parameter).OrderBy(x => x).ToList();
             return source.OrderBy(x => x).ToList();
         }
-
+        [Route("GetCompanySource")]
         [HttpGet]
         public List<CompanyModel> GetCompanySource()
         {
@@ -304,7 +303,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.CompanyRepository.GetAll();
             return source;
         }
-
+        [Route("GetCostumerSource")]
         [HttpGet]
         public List<CostumerModel> GetCostumerSource()
         {
@@ -312,7 +311,7 @@ namespace StarNoteWebAPICore.Controllers
             source = unitOfWork.CostumerRepository.GetAll();
             return source;
         }
-
+        [Route("Getselectedmodel")]
         [HttpGet]
         public OrderModel Getselectedmodel(int ID)
         {
@@ -323,7 +322,8 @@ namespace StarNoteWebAPICore.Controllers
             };
             return model;
         }
-
+        [Route("Getjoborderlist")]
+        [HttpGet]
         public List<string> Getjoborderlist()
         {
             List<string> joborderlist = new List<string>();
@@ -342,21 +342,21 @@ namespace StarNoteWebAPICore.Controllers
             joborderlist.Reverse();
             return joborderlist;
         }
-
+        [Route("Getselectedstok")]
         [HttpGet]
         public StokModel Getselectedstok(string name)
         {
             return unitOfWork.StokRepository.GetByStockNamme(name);
         }
 
-      
 
+        [Route("Getnewid")]
         [HttpGet]
         public int Getnewid()
         {
            return unitOfWork.CostumerorderRepository.GetMaxId();
         }
-
+        [Route("Getselectedfilelist")]
         [HttpGet]
         public List<FilemanagementModel> Getselectedfilelist(int id)
         {

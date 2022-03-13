@@ -32,7 +32,7 @@ namespace StarNoteWebAPICore.Controllers
         {
             return unitOfWork.UserRepository.GetAll();
         }
-
+        [Route("AddUser")]
         [HttpPost]
         public bool AddUser(UsersModel objuser)
         {
@@ -42,7 +42,7 @@ namespace StarNoteWebAPICore.Controllers
                 IsAdded = true;
             return IsAdded;
         }
-
+        [Route("UpdateUser")]
         [HttpPost]
         public bool UpdateUser(UsersModel objuser)
         {
@@ -52,7 +52,7 @@ namespace StarNoteWebAPICore.Controllers
                 Isupdated = true;
             return Isupdated;
         }
-
+        [Route("DeleteUser")]
         [HttpPost]
         public bool DeleteUser(UsersModel objuser)
         {
@@ -62,7 +62,7 @@ namespace StarNoteWebAPICore.Controllers
                 IsDeleted = true;
             return IsDeleted;
         }
-
+        [Route("Pwchange")]
         [HttpPost]
         public bool Pwchange(UsersModel objuser)
         {

@@ -60,12 +60,12 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
         {
             string sql = "";
             sql += " Select tbl_customerorder.ID";
-            sql += " ,tbl_customerorder.Daliverydate AS RAN_DATE";
-            sql += " ,(SUM(Case When tbl_customerorder.Salesmethod = '" + satıs + "' Then tbl_joborder.Price ELSE 0 END)";
-            sql += " - SUM(Case When tbl_customerorder.Salesmethod = '" + satınalma + "' Then tbl_joborder.Price ELSE 0 END)) AS PRICE";
-            sql += "  from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID=tbl_joborder.Upperid";
-            sql += " WHERE MID(tbl_customerorder.Daliverydate, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' AND";
-            sql += " tbl_customerorder.savetype = '1' GROUP BY tbl_customerorder.Daliverydate";
+            sql += " ,tbl_customerorder.Randevutarihi AS RAN_DATE";
+            sql += " ,(SUM(Case When tbl_customerorder.Satışyöntemi = '" + satıs + "' Then tbl_joborder.Ücret ELSE 0 END)";
+            sql += " - SUM(Case When tbl_customerorder.Satışyöntemi = '" + satınalma + "' Then tbl_joborder.Ücret ELSE 0 END)) AS PRICE";
+            sql += "  from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID=tbl_joborder.Üstid";
+            sql += " WHERE MID(tbl_customerorder.Randevutarihi, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Randevutarihi, 7, 4) = '" + year + "' AND";
+            sql += " tbl_customerorder.Savetype = '1' GROUP BY tbl_customerorder.Randevutarihi";
             var enttiyresult1 = starnoteapicontext.partial_analysis.FromSqlRaw(sql).ToList();
 
             return enttiyresult1;
@@ -74,39 +74,39 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
         public List<partial_analysis> GetAnalysisMontly(string satıs, string satınalma, string month, string year, string type, string stokname)
         {
             string sqlcmd = "";
-            sqlcmd += "Select tbl_customerorder.ID,tbl_customerorder.Daliverydate AS RAN_DATE,";
-            sqlcmd += " (SUM(Case When tbl_customerorder.Salesmethod = '" + satıs + "' Then tbl_joborder.Price ELSE 0 END)";
-            sqlcmd += " - SUM(Case When tbl_customerorder.Salesmethod = '" + satınalma + "' Then tbl_joborder.Price ELSE 0 END)) AS";
-            sqlcmd += " PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID=tbl_joborder.Upperid";
-            sqlcmd += " WHERE MID(tbl_customerorder.Daliverydate, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' AND";
-            sqlcmd += " tbl_joborder.Product2='" + stokname + "' ";
+            sqlcmd += "Select tbl_customerorder.ID,tbl_customerorder.Randevutarihi AS RAN_DATE,";
+            sqlcmd += " (SUM(Case When tbl_customerorder.Satışyöntemi = '" + satıs + "' Then tbl_joborder.Ücret ELSE 0 END)";
+            sqlcmd += " - SUM(Case When tbl_customerorder.Satışyöntemi = '" + satınalma + "' Then tbl_joborder.Ücret ELSE 0 END)) AS";
+            sqlcmd += " PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID=tbl_joborder.Üstid";
+            sqlcmd += " WHERE MID(tbl_customerorder.Randevutarihi, 4, 2) = '" + month + "'AND MID(tbl_customerorder.Randevutarihi, 7, 4) = '" + year + "' AND";
+            sqlcmd += " tbl_joborder.Ürün2='" + stokname + "' ";
             if (type == adliyeaylık)
             {
-                sqlcmd += " AND tbl_customerorder.savetype='0'";
-                sqlcmd += " AND tbl_customerorder.Type <>'ÖZEL MÜŞTERİLER'";
-                sqlcmd += " AND tbl_customerorder.Type <>'ŞİRKETLER'";
+                sqlcmd += " AND tbl_customerorder.Savetype='0'";
+                sqlcmd += " AND tbl_customerorder.Tür <>'ÖZEL MÜŞTERİLER'";
+                sqlcmd += " AND tbl_customerorder.Tür <>'ŞİRKETLER'";
             }
             if (type == özelaylık)
             {
-                sqlcmd += "AND tbl_customerorder.savetype='0'";
-                sqlcmd += " AND tbl_customerorder.Type ='ÖZEL MÜŞTERİLER'";
+                sqlcmd += "AND tbl_customerorder.Savetype='0'";
+                sqlcmd += " AND tbl_customerorder.Tür ='ÖZEL MÜŞTERİLER'";
             }
             if (type == digerkurumaylık)
             {
                 sqlcmd += " AND tbl_customerorder.savetype='0'";
-                sqlcmd += " AND tbl_customerorder.Type ='ŞİRKETLER'";
+                sqlcmd += " AND tbl_customerorder.Tür ='ŞİRKETLER'";
             }
             if (type == harcamaaylık)
             {
                 sqlcmd += " AND tbl_customerorder.savetype='1'";
-                sqlcmd += " AND tbl_customerorder.Salesmethod = 'GIDER'";
+                sqlcmd += " AND tbl_customerorder.Satışyöntemi = 'GIDER'";
             }
             if (type == ekgeliraylık)
             {
                 sqlcmd += " AND tbl_customerorder.savetype='1'";
-                sqlcmd += " AND tbl_customerorder.Salesmethod = 'GELIR'";
+                sqlcmd += " AND tbl_customerorder.Satışyöntemi = 'GELIR'";
             }
-            sqlcmd += " GROUP BY tbl_customerorder.Daliverydate";
+            sqlcmd += " GROUP BY tbl_customerorder.Randevutarihi";
             var enttiyresult = starnoteapicontext.partial_analysis.FromSqlRaw(sqlcmd).ToList();
 
             return enttiyresult;
@@ -229,48 +229,48 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
 
         public List<partial_analysis> GetAnalysisYearlyAll(string satıs, string satınalma, string month, string year)
         {
-            string sql = "Select tbl_customerorder.ID AS ID, tbl_customerorder.Daliverydate AS RAN_DATE, (SUM(Case When tbl_customerorder.Salesmethod = '" + Satış + "' Then";
-            sql += " tbl_joborder.PRICE ELSE 0 END) - SUM(Case When tbl_customerorder.Salesmethod = '" + Satınalma + "' Then tbl_joborder.PRICE ELSE 0 END))";
-            sql += " AS PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID = tbl_joborder.Upperid";
-            sql += " WHERE MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' AND tbl_customerorder.savetype = '1' GROUP BY MID(tbl_customerorder.Daliverydate, 4, 2)";
+            string sql = "Select tbl_customerorder.ID AS ID, tbl_customerorder.Randevutarihi AS RAN_DATE, (SUM(Case When tbl_customerorder.Satışyöntemi = '" + Satış + "' Then";
+            sql += " tbl_joborder.Ücret ELSE 0 END) - SUM(Case When tbl_customerorder.Satışyöntemi = '" + Satınalma + "' Then tbl_joborder.Ücret ELSE 0 END))";
+            sql += " AS PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID = tbl_joborder.Üstid";
+            sql += " WHERE MID(tbl_customerorder.Randevutarihi, 7, 4) = '" + year + "' AND tbl_customerorder.savetype = '1' GROUP BY MID(tbl_customerorder.Randevutarihi, 4, 2)";
             var enttiyresult1 = starnoteapicontext.partial_analysis.FromSqlRaw(sql).ToList();
             return enttiyresult1;
         }
 
         public List<partial_analysis> GetAnalysisYearly(string satıs, string satınalma, string month, string year, string type, string stokname)
         {
-            string sqlcmd = "Select tbl_customerorder.ID AS ID, tbl_customerorder.Daliverydate AS RAN_DATE, (SUM(Case";
-            sqlcmd += " When tbl_customerorder.Salesmethod = '" + Satış + "' Then tbl_joborder.PRICE ELSE 0 END)";
-            sqlcmd += " - SUM(Case When tbl_customerorder.Salesmethod = '" + Satınalma + "' Then tbl_joborder.PRICE ELSE 0 END))";
-            sqlcmd += " AS PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID = tbl_joborder.Upperid WHERE";
-            sqlcmd += " MID(tbl_customerorder.Daliverydate, 7, 4) = '" + year + "' AND tbl_joborder.Product2 = '" + stokname + "' AND tbl_customerorder.savetype = '0'";
+            string sqlcmd = "Select tbl_customerorder.ID AS ID, tbl_customerorder.Randevutarihi AS RAN_DATE, (SUM(Case";
+            sqlcmd += " When tbl_customerorder.Satışyöntemi = '" + Satış + "' Then tbl_joborder.Ücret ELSE 0 END)";
+            sqlcmd += " - SUM(Case When tbl_customerorder.Satışyöntemi = '" + Satınalma + "' Then tbl_joborder.Ücret ELSE 0 END))";
+            sqlcmd += " AS PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID = tbl_joborder.Üstid WHERE";
+            sqlcmd += " MID(tbl_customerorder.Randevutarihi, 7, 4) = '" + year + "' AND tbl_joborder.Ürün2 = '" + stokname + "' AND tbl_customerorder.Savetype = '0'";
             if (type == adliyeyıllık)
             {
-                sqlcmd += " AND tbl_customerorder.savetype='0'";
-                sqlcmd += " AND tbl_customerorder.Type <>'ÖZEL MÜŞTERİLER'";
-                sqlcmd += " AND tbl_customerorder.Type <>'ŞİRKETLER'";
+                sqlcmd += " AND tbl_customerorder.Savetype='0'";
+                sqlcmd += " AND tbl_customerorder.Tür <>'ÖZEL MÜŞTERİLER'";
+                sqlcmd += " AND tbl_customerorder.Tür <>'ŞİRKETLER'";
             }
             if (type == özelyıllık)
             {
-                sqlcmd += "AND tbl_customerorder.savetype='0'";
-                sqlcmd += " AND tbl_customerorder.Type ='ÖZEL MÜŞTERİLER'";
+                sqlcmd += "AND tbl_customerorder.Savetype='0'";
+                sqlcmd += " AND tbl_customerorder.Tür ='ÖZEL MÜŞTERİLER'";
             }
             if (type == digerkurumyıllık)
             {
-                sqlcmd += " AND tbl_customerorder.savetype='0'";
-                sqlcmd += " AND tbl_customerorder.Type ='ŞİRKETLER'";
+                sqlcmd += " AND tbl_customerorder.Savetype='0'";
+                sqlcmd += " AND tbl_customerorder.Tür ='ŞİRKETLER'";
             }
             if (type == harcamayıllık)
             {
-                sqlcmd += " AND tbl_customerorder.savetype='1'";
-                sqlcmd += " AND tbl_customerorder.Salesmethod = 'GIDER'";
+                sqlcmd += " AND tbl_customerorder.Savetype='1'";
+                sqlcmd += " AND tbl_customerorder.Satışyöntemi = 'GIDER'";
             }
             if (type == ekgeliryıllık)
             {
-                sqlcmd += " AND tbl_customerorder.savetype='1'";
-                sqlcmd += " AND tbl_customerorder.Salesmethod = 'GELIR'";
+                sqlcmd += " AND tbl_customerorder.Savetype='1'";
+                sqlcmd += " AND tbl_customerorder.Satışyöntemi = 'GELIR'";
             }
-            sqlcmd += " GROUP BY MID(tbl_customerorder.Daliverydate, 4, 2)";
+            sqlcmd += " GROUP BY MID(tbl_customerorder.Randevutarihi, 4, 2)";
             var enttiyresult = starnoteapicontext.partial_analysis.FromSqlRaw(sqlcmd).ToList();
             return enttiyresult;
         }

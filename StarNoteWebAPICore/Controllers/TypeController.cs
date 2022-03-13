@@ -33,7 +33,7 @@ namespace StarNoteWebAPICore.Controllers
         {
             return unitOfWork.TypeRepository.GetAll();
         }
-
+        [Route("AddTür")]
         [HttpPost]
         public bool AddTür(TypeModel objtür)
         {
@@ -43,7 +43,7 @@ namespace StarNoteWebAPICore.Controllers
                 IsAdded = true;
             return IsAdded;
         }
-
+        [Route("UpdateTür")]
         [HttpPost]
         public bool UpdateTür(TypeModel objtür)
         {
@@ -53,7 +53,7 @@ namespace StarNoteWebAPICore.Controllers
                 Isupdated = true;
             return Isupdated;
         }
-
+        [Route("DeleteTür")]
         [HttpPost]
         public bool DeleteTür(TypeModel objtür)
         {

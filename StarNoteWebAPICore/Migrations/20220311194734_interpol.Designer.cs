@@ -8,7 +8,7 @@ using StarNoteWebAPICore.DataAccess;
 namespace StarNoteWebAPICore.Migrations
 {
     [DbContext(typeof(StarNoteEntity))]
-    [Migration("20220309145455_interpol")]
+    [Migration("20220311194734_interpol")]
     partial class interpol
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

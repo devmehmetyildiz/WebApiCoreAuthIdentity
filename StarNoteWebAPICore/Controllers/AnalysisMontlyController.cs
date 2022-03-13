@@ -31,7 +31,7 @@ namespace StarNoteWebAPICore.Controllers
             _context = context;
             unitOfWork = new UnitOfWork(context);
         }
-
+        [Route("GetMontlyAnalysis")]
         [HttpGet]
         public List<AnalysisMontlyModel> GetMontlyAnalysis(string date,string type)
         {
@@ -283,7 +283,7 @@ namespace StarNoteWebAPICore.Controllers
             }
             return analysis;
         }
-
+        [Route("Getmontlysalesgauge")]
         [HttpGet]
         public List<string> Getmontlysalesgauge(string date, string type)
         {
@@ -293,7 +293,7 @@ namespace StarNoteWebAPICore.Controllers
             };
             return output;
         }
-
+        [Route("Getmontlypurchasegauge")]
         [HttpGet]
         public List<string> Getmontlypurchasegauge(string date, string type)
         {
@@ -303,7 +303,7 @@ namespace StarNoteWebAPICore.Controllers
             };
             return output;
         }
-
+        [Route("Getmontlynetgauge")]
         [HttpGet]
         public List<string> Getmontlynetgauge(string date, string type)
         {
@@ -313,7 +313,7 @@ namespace StarNoteWebAPICore.Controllers
             };
             return output;
         }
-
+        [Route("Getmontlypotansialgauge")]
         [HttpGet]
         public List<string> Getmontlypotansialgauge(string date, string type)
         {

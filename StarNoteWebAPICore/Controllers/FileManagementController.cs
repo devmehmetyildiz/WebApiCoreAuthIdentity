@@ -25,12 +25,12 @@ namespace StarNoteWebAPICore.Controllers
             _context = context;
             unitOfWork = new UnitOfWork(context);
         }
-        [Route("GetAll")]
+        [Route("Getfilelist")]
         [HttpGet]
         public List<FilemanagementModel> Getfilelist()
         {
             List<FilemanagementModel> filelist = new List<FilemanagementModel>();
-            unitOfWork.FilemanagementRepository.GetAll();
+            filelist =  unitOfWork.FilemanagementRepository.GetAll();
             return filelist;
         }
 
