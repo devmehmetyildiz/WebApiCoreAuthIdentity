@@ -28,5 +28,11 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Abstract
         string GetYearlypurchasegauge(string type, string date);
         string GetYearlynetgauge(string type, string date);
         string GetYearlypotasialgauege(string type, string date);
+
+        string calcsumpayment(string payment,string date,string method);
+
+        List<partial_saleschart> Getaccountingsales(string method, string month, string year);
+
+        List<partial_salespie> Getaccountingpie(string method, string month, string year);
     }
 }

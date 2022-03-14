@@ -243,7 +243,7 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
             sqlcmd += " When tbl_customerorder.Satışyöntemi = '" + Satış + "' Then tbl_joborder.Ücret ELSE 0 END)";
             sqlcmd += " - SUM(Case When tbl_customerorder.Satışyöntemi = '" + Satınalma + "' Then tbl_joborder.Ücret ELSE 0 END))";
             sqlcmd += " AS PRICE from tbl_customerorder LEFT JOIN tbl_joborder ON tbl_customerorder.ID = tbl_joborder.Üstid WHERE";
-            sqlcmd += " MID(tbl_customerorder.Randevutarihi, 7, 4) = '" + year + "' AND tbl_joborder.Ürün2 = '" + stokname + "' AND tbl_customerorder.Savetype = '0'";
+            sqlcmd += " MID(tbl_customerorder.Randevutarihi, 7, 4) = '" + year + "' AND tbl_joborder.Ürün2 = '" + stokname + "' ";
             if (type == adliyeyıllık)
             {
                 sqlcmd += " AND tbl_customerorder.Savetype='0'";
@@ -387,6 +387,21 @@ namespace StarNoteWebAPICore.DataAccess.Repositories.Concrete
             if (item == string.Empty)
                 item = "0";
             return item;
+        }
+
+        public string calcsumpayment(string payment, string date, string method)
+        {
+            return (from c in starnoteapicontext.tbl_customerorder where (c.Ödemeyöntemi == payment && c.Satışyöntemi == method && c.Randevutarihi.Substring(0, 10) == date) select c.Ücret).Sum().ToString();
+        }
+
+        public List<partial_saleschart> Getaccountingsales(string method, string month, string year)
+        {
+            return starnoteapicontext.partial_saleschart.FromSqlRaw("Select Id,Randevutarihi AS RAN_DATE,SUM(Ücret) AS PRICE from tbl_customerorder WHERE Satışyöntemi='" + method + "' AND MID(Randevutarihi, 4, 2) = '" + month + "'AND MID(Randevutarihi, 7, 4) = '" + year + "' Group By Randevutarihi").ToList();
+        }
+
+        public List<partial_salespie> Getaccountingpie(string method, string month, string year)
+        {
+           return starnoteapicontext.partial_salespie.FromSqlRaw("SELECT Id,Ödemeyöntemi AS PAYMENT,COUNT(Ödemeyöntemi)AS COUNT FROM tbl_customerorder WHERE Satışyöntemi='" + method + "' AND MID(Randevutarihi, 4, 2) = '" + month + "'AND MID(Randevutarihi, 7, 4) = '" + year + "' GROUP BY Ödemeyöntemi").ToList();
         }
     }
 }

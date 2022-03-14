@@ -19,8 +19,8 @@ namespace StarNoteWebAPICore.Controllers
     {
 
         private readonly string genelyıllık = "12";        
-        private readonly string harcamaaylık = "104";      
-        private readonly string ekgeliraylık = "105";       
+        private readonly string harcamayıllık = "204";      
+        private readonly string ekgeliryıllık = "205";       
         public readonly string Satınalma = "GIDER";
         public readonly string Satış = "GELIR";
         private readonly ILogger<AnalysisYearlyController> _logger;
@@ -46,7 +46,7 @@ namespace StarNoteWebAPICore.Controllers
             stoknamesall = unitOfWork.JoborderRepository.Usedstoks();
             foreach (var item in stoknamesall)
             {
-                if (type == harcamaaylık || type == ekgeliraylık)
+                if (type == harcamayıllık || type == ekgeliryıllık)
                 {
                     if (unitOfWork.StokRepository.GetByStockNamme(item) == null)
                         stoknames.Add(item);
