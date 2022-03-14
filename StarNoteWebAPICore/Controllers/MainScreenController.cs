@@ -144,6 +144,7 @@ namespace StarNoteWebAPICore.Controllers
                     joborder = count.ToString();
                     count++;
                 }
+                item.Id = 0;
                 item.Üstid = newid + 1;
                 item.Joborder = joborder;
                 unitOfWork.JoborderRepository.Add(item);
@@ -169,8 +170,8 @@ namespace StarNoteWebAPICore.Controllers
             int count = Convert.ToInt32(objmain.Joborder.Max(u => u.Joborder));
             foreach (var item in objmain.Joborder)
             {
-                JobOrderModel updatejoborder = unitOfWork.JoborderRepository.Getbyid(item.Id);
-                if (updatejoborder == null)
+               
+                if (item.Üstid==0)
                 {
                     if (isdava)
                     {
@@ -178,10 +179,12 @@ namespace StarNoteWebAPICore.Controllers
                         joborder = count.ToString();
                     }
                     JobOrderModel addjoborder = item;
+                    addjoborder.Joborder = joborder;
                     addjoborder.Üstid = objmain.Costumerorder.Id;
-
+                    addjoborder.Id = 0;
                     unitOfWork.JoborderRepository.Add(addjoborder);
                     joborder = (Convert.ToInt32(joborder) + 1).ToString();
+                   
                 }
                 else
                 {
