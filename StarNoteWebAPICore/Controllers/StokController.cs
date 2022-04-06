@@ -31,6 +31,14 @@ namespace StarNoteWebAPICore.Controllers
         {
             return unitOfWork.StokRepository.GetAll();
         }
+
+        [Route("GetSelectedStock")]
+        [HttpGet]
+        public StokModel GetStokAll(int ID)
+        {
+            return unitOfWork.StokRepository.Getbyid(ID);
+        }
+
         [Route("AddStok")]
         [HttpPost]
         public bool AddStok(StokModel objstok)

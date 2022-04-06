@@ -1,0 +1,45 @@
+﻿
+This is canlı 
+////////////////////////////////////////////////////////////////////////
+{
+  "ConnectionStrings": {
+    "Default": "server=94.73.147.38;user=u0584616_Uyg1;database=u0584616_Uyg1;password=YMfz94Y5VXsc15D;CharSet=utf8;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "Jwt": {
+    "Key": "t80QU52tlxIUjPH1wd8kFOAh8gNd6ayM9v6uXGBv",
+    "Issuer": "https://interpolapi.armsteknoloji.com/",
+    "Audience": "https://interpolapi.armsteknoloji.com/"
+  }
+}
+////////////////////////////////////////////////////////////////////////
+
+
+This is test 
+////////////////////////////////////////////////////////////////////////
+{
+  "ConnectionStrings": {
+    "Default": "server=94.73.147.38;user=u0584616_Uyg1_T;database=u0584616_Uyg1_T;password=YQvo07U1MXkd44K;CharSet=utf8;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "Jwt": {
+    "Key": "t80QU52tlxIUjPH1wd8kFOAh8gNd6ayM9v6uXGBv",
+    "Issuer": "http://localhost:18598/",
+    "Audience": "http://localhost:18598/"
+  }
+}
+////////////////////////////////////////////////////////////////////////
