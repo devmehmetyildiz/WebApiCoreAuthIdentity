@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace WebApiCoreAuthRoles.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,9 +12,9 @@ namespace WebApiCoreAuthRoles.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Id = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
                     Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -48,12 +48,37 @@ namespace WebApiCoreAuthRoles.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IdentityUser",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
+                    UserName = table.Column<string>(type: "text", nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdentityUser", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", maxLength: 85, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<string>(type: "varchar(767)", nullable: false),
+                    RoleId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -72,9 +97,9 @@ namespace WebApiCoreAuthRoles.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", maxLength: 85, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(type: "varchar(767)", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -93,10 +118,10 @@ namespace WebApiCoreAuthRoles.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "varchar(767)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "varchar(767)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
+                    ProviderKey = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "varchar(767)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,8 +138,8 @@ namespace WebApiCoreAuthRoles.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "varchar(767)", nullable: false),
-                    RoleId = table.Column<string>(type: "varchar(767)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
+                    RoleId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,9 +162,9 @@ namespace WebApiCoreAuthRoles.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "varchar(767)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "varchar(767)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(767)", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
+                    LoginProvider = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
+                    Name = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -207,6 +232,9 @@ namespace WebApiCoreAuthRoles.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "IdentityUser");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -82,6 +82,7 @@ namespace WebApiCoreAuthRoles.Controllers
             if (await roleManager.RoleExistsAsync(UserRoles.Admin))
             {
                 await userManager.AddToRoleAsync(user, UserRoles.Admin);
+                await userManager.AddToRoleAsync(user, UserRoles.User);
             }
             return Ok(new Response { Status = "Success", Massage = "User Created Successfully" });
         }
